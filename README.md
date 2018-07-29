@@ -1,6 +1,4 @@
-# Project Title
-
-OSRS AutoSwitcher
+# OSRS AutoSwitcher
 
 ## Description
 
