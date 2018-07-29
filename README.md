@@ -6,7 +6,7 @@ OSRS AutoSwitcher
 
 The AutoSwitcher is written in C# and is meant to be used with Windows. The AutoSwitcher is meant to be used for OldSchool RuneScape to switch equipment more reliably and faster. I do not support nor endorse cheating in RuneScape, if you get banned it is NOT my fault.
 
-Compiles under Visual Studio 2017, is not tested anywhere else. 
+A compiled version can be downloaded from the [release](https://github.com/SDCAAU/OSRS-AutoSwitcher/releases) section. Alternatively you can compile it yourself. It is tested to compile under Visual Studio 2017, is not tested anywhere else. 
 
 ## Features
 
