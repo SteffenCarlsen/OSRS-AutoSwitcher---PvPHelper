@@ -59,6 +59,12 @@
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="NHotkey, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NHotkey.1.2.1\lib\net20\NHotkey.dll</HintPath>
+    </Reference>
+    <Reference Include="NHotkey.WindowsForms, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NHotkey.WindowsForms.1.2.1\lib\net20\NHotkey.WindowsForms.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -81,6 +87,7 @@
     <Compile Include="Data\JsonObjectFileSaveLoad.cs" />
     <Compile Include="Model\AutoSwitchData.cs" />
     <Compile Include="Model\InventoryItem.cs" />
+    <Compile Include="Model\PrayerBook.cs" />
     <Compile Include="MouseEvents\MouseEvents.cs" />
     <Compile Include="NewPreset.cs">
       <SubType>Form</SubType>
