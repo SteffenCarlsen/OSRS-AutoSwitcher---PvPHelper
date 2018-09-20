@@ -31,7 +31,8 @@ If there's any problems, feel free to open an Issue.
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
-##Changelog
+## Changelog
+
 ### [1.0.1] - 21-09-2018
 #### Added
 - Special attack
