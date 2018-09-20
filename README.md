@@ -2,7 +2,7 @@
 
 ## Description
 
-![](https://i.imgur.com/krNFz0F.png)
+![](https://i.imgur.com/2WYffe0.png)
 
 The AutoSwitcher is written in C# and is meant to be used with Windows. The AutoSwitcher is meant to be used for OldSchool RuneScape to switch equipment more reliably and faster. I do not support nor endorse cheating in RuneScape, if you get banned it is NOT my fault.
 
