@@ -30,3 +30,19 @@ If there's any problems, feel free to open an Issue.
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+##Changelog
+### [1.0.1] - 21-09-2018
+#### Added
+- Special attack
+- Prayer usage
+- PK Helper(Eat/Potions/Prayer)
+#### Changed
+- Revamped hotkey implementation
+- Improved AutoSwitch logic
+- Added randomization to mouse movements and clicking
+#### Known Errors
+- WIP About-Page
+- Saving and Reloading presets do not work
+- Crashes during re-hooking of hotkeys
+- Does not always properly perform actions before a second hotkey hook
