@@ -5,17 +5,17 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Forms;
 using AutoSwitcher.Data;
 using AutoSwitcher.Model;
 using Gma.System.MouseKeyHook;
 using NHotkey;
 using NHotkey.WindowsForms;
+using Timer = System.Threading.Timer;
 
 namespace AutoSwitcher
 {
-    //todo 3: Change hotkey *.dll setup
-    //todo 4: Add magic/range/melee/smite pray functionality
     //todo 5: Add spec wep 2 functionality + combo functionality
     //todo 6: Test functionality 
     //todo 7: Add antipattern and smooth randomized mouse movements
@@ -323,10 +323,27 @@ namespace AutoSwitcher
                 HotkeyManager.Current.AddOrReplace("SpecWepOne", SpecWep1Key, SpecialAttackWep1);
 
             }
-
             if (SaraKey != Keys.None)
             {
                 HotkeyManager.Current.AddOrReplace("Sara", SaraKey, SaradominBrew);
+
+            }
+
+            if (MagicPrayKey != Keys.None)
+            {
+                HotkeyManager.Current.AddOrReplace("Magic", MagicPrayKey, MageOn);
+
+            }
+
+            if (MeleePrayKey != Keys.None)
+            {
+                HotkeyManager.Current.AddOrReplace("Melee", MeleePrayKey, MeleeOn);
+
+            }
+
+            if (RangePrayKey != Keys.None)
+            {
+                HotkeyManager.Current.AddOrReplace("Range", RangePrayKey, RangeOn);
 
             }
         }
@@ -372,6 +389,11 @@ namespace AutoSwitcher
             HotkeyManager.Current.Remove("Normalfood");
             HotkeyManager.Current.Remove("ComboFood");
             HotkeyManager.Current.Remove("SpecWepOne");
+            HotkeyManager.Current.Remove("Range");
+            HotkeyManager.Current.Remove("Melee");
+            HotkeyManager.Current.Remove("Magic");
+            HotkeyManager.Current.Remove("Sara");
+            UnsubscribeForHotkey();
         }
 
         private void SubscribeForHotkey(int callerId)
@@ -501,6 +523,15 @@ namespace AutoSwitcher
         private void UnsubscribeForHotkey()
         {
             _mGlobalHookHotkey.KeyPress -= HotkeyPressOne;
+            _mGlobalHookHotkey.KeyPress -= HotkeyPressTwo;
+            _mGlobalHookHotkey.KeyPress -= HotkeyPressThree;
+            _mGlobalHookHotkey.KeyPress -= HotkeyPressFour;
+            _mGlobalHookHotkey.KeyPress -= HotkeyPressFive;
+            _mGlobalHookHotkey.KeyPress -= HotkeyPressSix;
+            _mGlobalHookHotkey.KeyPress -= HotkeyPressSeven;
+            _mGlobalHookHotkey.KeyPress -= HotkeyPressEigth;
+            _mGlobalHookHotkey.KeyPress -= HotkeyPressNine;
+            _mGlobalHookHotkey.KeyPress -= HotkeyPressTen;
             _mGlobalHookHotkey.Dispose();
         }
 
@@ -516,8 +547,6 @@ namespace AutoSwitcher
         {
             if (_keyChar != null || _foodChar != null || _prayerChar != null || _combofoodChar != null || _brewChar != null)
             {
-                //_mGlobalHook = Hook.GlobalEvents();
-                //_mGlobalHook.KeyPress += GlobalHookKeyPress;
                 HookHotkeys();
                 button2.Text = "Stop (Unhook hotkey)";
             }
@@ -530,47 +559,8 @@ namespace AutoSwitcher
         public void Unsubscribe()
         {
             UnHookHotkeys();
-            //_mGlobalHook.KeyPress -= GlobalHookKeyPress;
-            //_mGlobalHook.Dispose();
         }
-
-        private void GlobalHookKeyPress(object sender, KeyPressEventArgs e)
-        {
-            
-            if (e.KeyChar == _keyChar)
-            {
-                
-            }
-            else if (e.KeyChar == _foodChar)
-            {
-                _actionOrderStack.Push(InventoryItem.InventType.NormalFood);
-            }
-            else if (e.KeyChar == _combofoodChar)
-            {
-                _actionOrderStack.Push(InventoryItem.InventType.ComboFood);
-            }
-            else if (e.KeyChar == _brewChar)
-            {
-                _actionOrderStack.Push(InventoryItem.InventType.SaraBrew);
-            }
-            else if (e.KeyChar == _prayerChar)
-            {
-                _actionOrderStack.Push(InventoryItem.InventType.PrayerPot);
-            }
-            else if (e.KeyChar == _SpecChar)
-            {
-                _actionOrderStack.Push(InventoryItem.InventType.SpecWepOne);
-            }
-            else
-            {
-                e.Handled = true;
-            }
-        }
-
-        private void GlobalHookMouseDownExt(object sender, MouseEventExtArgs e)
-        {
-        }
-
+       
         private void textBox2_MouseDown(object sender, MouseEventArgs e)
         {
             textBox2.Text = "Press key to use as hotkey";
@@ -579,7 +569,6 @@ namespace AutoSwitcher
 
         private void UsePrayer(PrayerBook.Prayer prayer)
         {
-            Console.WriteLine("Method called");
             foreach (var tuple in PrayerBook.ActivePrayerBook)
             {
                 if (tuple.Key == prayer)
@@ -647,8 +636,9 @@ namespace AutoSwitcher
                 var outval = PrayerBook.ActivePrayerBook.TryGetValue(_specOnePrayer, out var res);
                 if (outval)
                 {
-                    SendKeys.SendWait("{" + _prayerKey + "}");
-                    MouseEvents.LinearSmoothMove(res.Item2, _speed, true);
+                    UsePrayer(_specOnePrayer);
+                   // SendKeys.SendWait("{" + _prayerKey + "}");
+                    //MouseEvents.LinearSmoothMove(res.Item2, _speed, true);
                 }
             }
 
@@ -2011,17 +2001,70 @@ namespace AutoSwitcher
         }
 
         #endregion
-
+        System.Timers.Timer t = new System.Timers.Timer();
+        private bool timerStarted = false;
         private void button12_Click(object sender, EventArgs e)
         {
-            HotkeyManager.Current.AddOrReplace("SmiteOn", Keys.A , SmiteOn);
-            //HotkeyManager.Current.AddOrReplace("test",Keys.);
+            if (!timerStarted)
+            {
+                Random r = new Random();
+                t.Interval = r.Next(6000, 8000);
+                t.Elapsed += TOnElapsed;
+                t.Start();
+                timerStarted = true;
+                button12.Text = "Stop";
+            }
+            else
+            {
+                t.Stop();
+                timerStarted = false;
+                button12.Text = "Start";
+            }
+
+        }
+
+        private void TOnElapsed(object sender, ElapsedEventArgs e)
+        {
+            Random r = new Random();
+            MouseEvents.LinearSmoothMove(prayer,r.Next(20,40),true);
+            Thread.Sleep(r.Next(400,500));
+            MouseEvents.LinearSmoothMove(prayer, r.Next(10, 20), true);
+            t.Interval = r.Next(8000, 25000);
         }
 
         private void SmiteOn(object sender, HotkeyEventArgs e)
         {
-            Console.WriteLine("Prayer attempted to be used");
-            UsePrayer(PrayerBook.Prayer.UltimateStrength);
+            UsePrayer(PrayerBook.Prayer.Smite);
+        }
+        private void MeleeOn(object sender, HotkeyEventArgs e)
+        {
+            UsePrayer(PrayerBook.Prayer.ProtectfromMelee);
+        }
+        private void RangeOn(object sender, HotkeyEventArgs e)
+        {
+            UsePrayer(PrayerBook.Prayer.ProtectfroMissiles);
+        }
+        private void MageOn(object sender, HotkeyEventArgs e)
+        {
+            UsePrayer(PrayerBook.Prayer.ProtectfromMagic);
+        }
+
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private Point prayer;
+        private void textBox20_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.ControlKey)
+            {
+                var p = Cursor.Position;
+                prayer = p;
+                textBox20.Text = p.ToString();
+
+            }
         }
     }
 }
