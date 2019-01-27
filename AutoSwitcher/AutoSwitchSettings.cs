@@ -2001,36 +2001,6 @@ namespace AutoSwitcher
         }
 
         #endregion
-        System.Timers.Timer t = new System.Timers.Timer();
-        private bool timerStarted = false;
-        private void button12_Click(object sender, EventArgs e)
-        {
-            if (!timerStarted)
-            {
-                Random r = new Random();
-                t.Interval = r.Next(6000, 8000);
-                t.Elapsed += TOnElapsed;
-                t.Start();
-                timerStarted = true;
-                button12.Text = "Stop";
-            }
-            else
-            {
-                t.Stop();
-                timerStarted = false;
-                button12.Text = "Start";
-            }
-
-        }
-
-        private void TOnElapsed(object sender, ElapsedEventArgs e)
-        {
-            Random r = new Random();
-            MouseEvents.LinearSmoothMove(prayer,r.Next(20,40),true);
-            Thread.Sleep(r.Next(400,500));
-            MouseEvents.LinearSmoothMove(prayer, r.Next(10, 20), true);
-            t.Interval = r.Next(8000, 25000);
-        }
 
         private void SmiteOn(object sender, HotkeyEventArgs e)
         {
@@ -2047,24 +2017,6 @@ namespace AutoSwitcher
         private void MageOn(object sender, HotkeyEventArgs e)
         {
             UsePrayer(PrayerBook.Prayer.ProtectfromMagic);
-        }
-
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private Point prayer;
-        private void textBox20_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.ControlKey)
-            {
-                var p = Cursor.Position;
-                prayer = p;
-                textBox20.Text = p.ToString();
-
-            }
         }
     }
 }
