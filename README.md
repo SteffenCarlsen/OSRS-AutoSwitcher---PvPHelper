@@ -17,6 +17,8 @@ A compiled version can be downloaded from the [release](https://github.com/SDCAA
 * Going back to old mouse postion after switching
 * Hotkey selection
 * Supporting Fixed/Resizeable and stretched Fixed (RuneLite) //Temporarily not supported
+* Prayer switching on hotkey
+* Automatically special attack on target at mouse position
 * Saving and loading presets
 
 ## Built With
