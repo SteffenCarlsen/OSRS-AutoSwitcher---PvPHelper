@@ -16,6 +16,7 @@ namespace OSRSAutoSwitcher
         public static DirectoryInfo SettingsDirectory;
         public static void Main(string[] args)
         {
+            Console.Title = "OSRS-AutoSwitcher & PvPHelper";
             InitSettings();
             while (true)
             {
