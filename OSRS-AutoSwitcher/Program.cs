@@ -8,14 +8,18 @@ using OSRSAutoSwitcher.Features;
 using OSRSAutoSwitcher.Globals;
 using OSRSAutoSwitcher.Interaction;
 using OSRSAutoSwitcher.Model;
+using LowLevelHooks;
+using LowLevelHooks.Keyboard;
 
 namespace OSRSAutoSwitcher
 {
     class Program
     {
+        private static KeyboardHook kHook;
         public static DirectoryInfo SettingsDirectory;
         public static void Main(string[] args)
         {
+            kHook = new KeyboardHook();
             Console.Title = "OSRS-AutoSwitcher & PvPHelper";
             InitSettings();
             while (true)

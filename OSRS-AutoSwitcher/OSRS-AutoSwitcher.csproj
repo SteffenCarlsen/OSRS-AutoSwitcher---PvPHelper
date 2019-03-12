@@ -54,6 +54,9 @@
     <StartupObject>OSRSAutoSwitcher.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="LowLevelHooks">
+      <HintPath>.\LowLevelHooks.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -74,6 +77,8 @@
     <Compile Include="Globals\JsonObjectSaveLoad.cs" />
     <Compile Include="Interaction\Mouse.cs" />
     <Compile Include="Features\PrayerSwitch.cs" />
+    <Compile Include="Model\AutoUseInventItem.cs" />
+    <Compile Include="Model\Potion.cs" />
     <Compile Include="Model\SpecialAttackHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -34,5 +34,6 @@ namespace OSRSAutoSwitcher.Model
         public bool WaitForSpecBar { get; set; }
         public Point SpecialAttackBarPoint { get; set; }
         public Dictionary<Keys, SpecialAttackHelper> SpecialAttackHotkeys { get; set; }
+
     }
 }
