@@ -8,18 +8,14 @@ using OSRSAutoSwitcher.Features;
 using OSRSAutoSwitcher.Globals;
 using OSRSAutoSwitcher.Interaction;
 using OSRSAutoSwitcher.Model;
-using LowLevelHooks;
-using LowLevelHooks.Keyboard;
 
 namespace OSRSAutoSwitcher
 {
     class Program
     {
-        private static KeyboardHook kHook;
         public static DirectoryInfo SettingsDirectory;
         public static void Main(string[] args)
         {
-            kHook = new KeyboardHook();
             Console.Title = "OSRS-AutoSwitcher & PvPHelper";
             InitSettings();
             while (true)
@@ -66,47 +62,14 @@ namespace OSRSAutoSwitcher
 
         private static void Start()
         {
-            Console.Clear();
-            if (Settings.Instance == null)
-            {
-                Console.WriteLine("Settings object was null, please load or set some settings");
-                Console.WriteLine("Press any key to return to main menu");
-                Console.ReadKey();
-                return;
-            }
-            var bPrayerActive = Settings.Instance.ActivePrayerHotkeys == null;
-            var bAutoSwitchActive = Settings.Instance.ActiveAutoSwitchHotkeys == null;
-            var bAutoSpecActive = Settings.Instance.SpecialAttackHotkeys == null;
-            if (bPrayerActive && bAutoSwitchActive)
-            {
-                Console.WriteLine("Unable to start since no hotkeys were specified");
-                Console.WriteLine("Press any key to return to main menu");
-                Console.ReadKey();
-                return;
-            }
-
-            Console.WriteLine("Mousespeed is: " + Settings.Instance.Speed);
-            Console.WriteLine("Return to old pos: " + Settings.Instance.ReturnToOldPos);
-            foreach (var autoSwitchHotkey in Settings.Instance.ActiveAutoSwitchHotkeys)
-            {
-                Console.WriteLine("Autoswitch on hotkey: " + autoSwitchHotkey.Key);
-            }
-
-            foreach (var prayerHotkey in Settings.Instance.ActivePrayerHotkeys)
-            {
-                Console.WriteLine(prayerHotkey.Key + " on hotkey " + prayerHotkey.Value);
-            }
-
-            foreach (var spec in Settings.Instance.SpecialAttackHotkeys)
-            {
-                Console.WriteLine("Special attack on hotkey: " + spec.Key);
-            }
+            if (!Settings.Instance.IsValid(out var bPrayerActive, out var bAutoSwitchActive, out var bAutoSpecActive)) return;
+            Settings.Instance.PrettyPrint();
             Console.WriteLine("Press ESC to stop OSRS-AutoSwitcher");
             DateTime startTime = DateTime.Now;
             while (true)
             {
                 Thread.Sleep(50);
-                
+
                 var resTime = DateTime.Now - startTime;
                 Console.Write("Been running for: " + Math.Floor(resTime.TotalSeconds) + " seconds");
                 Console.CursorLeft = 0;
@@ -114,7 +77,7 @@ namespace OSRSAutoSwitcher
                 {
                     foreach (var prayerHotkey in Settings.Instance.ActivePrayerHotkeys)
                     {
-                        if (Convert.ToBoolean((long) WindowsImports.GetAsyncKeyState(prayerHotkey.Value) & 0x8000))
+                        if (Convert.ToBoolean((long)WindowsImports.GetAsyncKeyState(prayerHotkey.Value) & 0x8000))
                         {
                             var oldPos = Cursor.Position;
                             SendKeys.SendWait("{" + Settings.Instance.PrayerFkey + "}");
@@ -122,7 +85,7 @@ namespace OSRSAutoSwitcher
                             Mouse.LinearSmoothMove(Settings.Instance.Prayers[prayerHotkey.Key], Settings.Instance.Speed, true);
                             if (Settings.Instance.ReturnToOldPos)
                             {
-                                Mouse.LinearSmoothMove(oldPos,Settings.Instance.Speed,false);
+                                Mouse.LinearSmoothMove(oldPos, Settings.Instance.Speed, false);
                             }
                         }
                     }
@@ -132,7 +95,7 @@ namespace OSRSAutoSwitcher
                 {
                     foreach (var autoSwitchHotkey in Settings.Instance.ActiveAutoSwitchHotkeys)
                     {
-                        if (Convert.ToBoolean((long) WindowsImports.GetAsyncKeyState(autoSwitchHotkey.Key) & 0x8000))
+                        if (Convert.ToBoolean((long)WindowsImports.GetAsyncKeyState(autoSwitchHotkey.Key) & 0x8000))
                         {
                             if (Settings.Instance.ActiveAutoSwitchHotkeys != null)
                             {
@@ -147,7 +110,7 @@ namespace OSRSAutoSwitcher
                                         Settings.Instance.InventorySlots[locations].Y);
                                     Thread.Sleep(50);
                                 }
-                                
+
                                 if (Settings.Instance.ReturnToOldPos)
                                 {
                                     Mouse.LinearSmoothMove(oldPos, Settings.Instance.Speed, false);
@@ -169,7 +132,7 @@ namespace OSRSAutoSwitcher
                     {
                         foreach (var hotkey in Settings.Instance.SpecialAttackHotkeys)
                         {
-                            if (Convert.ToBoolean((long) WindowsImports.GetAsyncKeyState(hotkey.Key) & 0x8000))
+                            if (Convert.ToBoolean((long)WindowsImports.GetAsyncKeyState(hotkey.Key) & 0x8000))
                             {
                                 var oldPos = Cursor.Position;
                                 SendKeys.SendWait("{" + Settings.Instance.InventFKey + "}");
@@ -186,7 +149,7 @@ namespace OSRSAutoSwitcher
 
                                 SendKeys.SendWait("{" + Settings.Instance.AttackFkey + "}");
                                 Thread.Sleep(Settings.Instance.WaitForSpecBar ? 450 : 100);
-                                Mouse.LinearSmoothMove(oldPos,Settings.Instance.Speed, true);
+                                Mouse.LinearSmoothMove(oldPos, Settings.Instance.Speed, true);
                                 int pressedCounter = 0;
                                 while (pressedCounter != hotkey.Value.SpecTimes)
                                 {
@@ -206,7 +169,7 @@ namespace OSRSAutoSwitcher
                         }
                     }
 
-                    if (Convert.ToBoolean((long) WindowsImports.GetAsyncKeyState(Keys.Escape) & 0x0001))
+                    if (Convert.ToBoolean((long)WindowsImports.GetAsyncKeyState(Keys.Escape) & 0x0001))
                     {
                         break;
                     }
@@ -218,7 +181,7 @@ namespace OSRSAutoSwitcher
 
         private static void InitSettings()
         {
-            var filePath = Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),System.Diagnostics.Process.GetCurrentProcess().ProcessName));
+            var filePath = Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), System.Diagnostics.Process.GetCurrentProcess().ProcessName));
             try
             {
                 SettingsDirectory = new DirectoryInfo(filePath);
