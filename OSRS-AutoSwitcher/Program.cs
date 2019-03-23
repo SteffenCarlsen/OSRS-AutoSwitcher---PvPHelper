@@ -47,9 +47,10 @@ namespace OSRSAutoSwitcher
                         Start();
                         break;
                     case ConsoleKey.D7:
-                        Environment.Exit(0);
+                        CLI.HotkeySettings();
                         break;
                     case ConsoleKey.D8:
+                        Environment.Exit(0);
                         break;
                     case ConsoleKey.D9:
                         break;

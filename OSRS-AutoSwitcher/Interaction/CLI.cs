@@ -170,7 +170,8 @@ namespace OSRSAutoSwitcher.Interaction
             Console.WriteLine("4. Save Settings");
             Console.WriteLine("5. Load Settings");
             Console.WriteLine("6. Start PvPHelper");
-            Console.WriteLine("7. Exit PvPHelper");
+            Console.WriteLine("7. Setup hotkeys");
+            Console.WriteLine("8. Exit PvPHelper");
             Console.WriteLine("Please input a number to continue...");
         }
 
@@ -425,6 +426,65 @@ namespace OSRSAutoSwitcher.Interaction
             Console.WriteLine("Press any key to return to main menu");
             Console.ReadKey();
 
+        }
+
+        public static void HotkeySettings()
+        {
+            PrintHotkeys(out var count);
+            var autosCount = Settings.Instance.ActiveAutoSwitchHotkeys.Count;
+            var prayerCount = Settings.Instance.ActivePrayerHotkeys.Count;
+            var specialCount = Settings.Instance.SpecialAttackHotkeys.Count;
+            Console.WriteLine("Enter a setting to change");
+            var KeyToSwitch = (Keys)Console.ReadKey().Key;
+            var convBool = int.TryParse(KeyToSwitch.ToString(), out var keyInt);
+            if (!convBool || keyInt > count)
+            {
+                Console.WriteLine("Invalid number input!");
+                return;
+            }
+
+            if (keyInt < autosCount)
+            {
+                Console.WriteLine("Please input new key");
+                var newKey = (Keys)Console.ReadKey().Key;
+                Settings.Instance.ActiveAutoSwitchHotkeys.ElementAt(keyInt).Key;
+            }
+        }
+
+        private static void PrintHotkeys(out int count)
+        {
+            count = 1;
+            if (Settings.Instance.ActiveAutoSwitchHotkeys.Count > 0)
+            {
+                Console.WriteLine("Autoswitch hotkeys:");
+                foreach (var aus in Settings.Instance.ActiveAutoSwitchHotkeys)
+                {
+                    Console.WriteLine(count + ". " + aus.Key);
+                    count++;
+                } 
+            }
+
+            if (Settings.Instance.ActivePrayerHotkeys.Count > 0)
+            {
+                Console.WriteLine("Prayer hotkeys");
+                foreach (var phk in Settings.Instance.ActivePrayerHotkeys)
+                {
+                    Console.WriteLine(count + ". " + phk.Key);
+                    count++;
+                }
+            }
+
+
+            if (Settings.Instance.SpecialAttackHotkeys.Count > 0)
+            {
+                Console.WriteLine("Special attack hotkeys:");
+                foreach (var sak in Settings.Instance.SpecialAttackHotkeys)
+                {
+                    Console.WriteLine(count + ". " + sak.Key);
+                    count++;
+                }
+            }
+            Console.WriteLine(count + ". Hotkey for closing OSRS-AutoSwitcher: " + Settings.Instance.ExitKey);
         }
     }
 }

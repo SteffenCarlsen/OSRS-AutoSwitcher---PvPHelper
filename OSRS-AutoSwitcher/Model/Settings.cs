@@ -19,8 +19,10 @@ namespace OSRSAutoSwitcher.Model
             ActiveAutoSwitchHotkeys = new Dictionary<Keys, List<int>>();
             ActivePrayerHotkeys = new Dictionary<PrayerBook.Prayer, Keys>();
             SpecialAttackHotkeys = new Dictionary<Keys, SpecialAttackHelper>();
+            ExitKey = Keys.Escape;
         }
         public static Settings Instance => _instance ?? (_instance = new Settings());
+        public Keys ExitKey { get; set; }
         public int Speed { get; set; }
         public bool ReturnToOldPos { get; set; }
         public bool Stretched { get; set; }
