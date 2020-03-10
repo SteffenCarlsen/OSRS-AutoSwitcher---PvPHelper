@@ -34,16 +34,17 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Changelog
 ### [1.3] - 10-03-2020 - WIP
+In order to accomodate for mouse input (mouse4/5) and allow modification of existing configurations, I'm changing to a Low level input library and adding an extra option in the menu.
 - Added the option to change an existing configuration
 - Changing from GetAsyncKeyState to low level Input manager to support all types of input (WIP)
 ### [1.2] - 23-02-2019
 Decided to rework the entire project since it started to get some attention from interested users. This is a WIP to rewrite the entire thing into an overall better application. Due to previous testing of functionaility being tedious, I decided to skip out on implementing a regular user interface and keep it console for now.
-### Added/edited
+#### Added/edited
 - Complete new Console UI
 - Reworked special attacking to supported weapons with no special attack bar
 - Reworked prayer helper to reliably change the correct prayers
 - All hotkeys are now done using GetAsyncKeyState for more reliable hotkeys and not relying on a library(That had wonky bugs anyway)
-### Removed
+#### Removed
 - Temporarily removed the PK Helper(Eating/Potions) till the rest of the functionality is improved
 ### [1.0.1] - 21-09-2018
 #### Added
