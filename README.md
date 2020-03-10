@@ -33,6 +33,9 @@ If there's any problems, feel free to open an Issue.
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
 ## Changelog
+### [1.3] - 10-03-2020 - WIP
+- Added the option to change an existing configuration
+- Changing from GetAsyncKeyState to low level Input manager to support all types of input (WIP)
 ### [1.2] - 23-02-2019
 Decided to rework the entire project since it started to get some attention from interested users. This is a WIP to rewrite the entire thing into an overall better application. Due to previous testing of functionaility being tedious, I decided to skip out on implementing a regular user interface and keep it console for now.
 ### Added/edited

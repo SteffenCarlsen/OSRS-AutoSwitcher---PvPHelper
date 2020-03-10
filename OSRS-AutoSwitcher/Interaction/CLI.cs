@@ -434,25 +434,52 @@ namespace OSRSAutoSwitcher.Interaction
             var autosCount = Settings.Instance.ActiveAutoSwitchHotkeys.Count;
             var prayerCount = Settings.Instance.ActivePrayerHotkeys.Count;
             var specialCount = Settings.Instance.SpecialAttackHotkeys.Count;
+
             Console.WriteLine("Enter a setting to change");
             var KeyToSwitch = (Keys)Console.ReadKey().Key;
-            var convBool = int.TryParse(KeyToSwitch.ToString(), out var keyInt);
-            if (!convBool || keyInt > count)
+            var status = Extensions.IsKeyADigit(KeyToSwitch);
+            var convBool = int.TryParse(KeyToSwitch.ToString().Replace("D", ""), out var keyInt);
+
+            if (!convBool || keyInt > count || !status)
             {
                 Console.WriteLine("Invalid number input!");
                 return;
             }
+            
+            Console.WriteLine("\nInput new hotkey");
+            var newHotkey = (Keys)Console.ReadKey().Key;
 
-            if (keyInt < autosCount)
+            switch (keyInt)
             {
-                Console.WriteLine("Please input new key");
-                var newKey = (Keys)Console.ReadKey().Key;
-                Settings.Instance.ActiveAutoSwitchHotkeys.ElementAt(keyInt).Key;
+                case int n when (n > 0 && n <= autosCount):
+                    var dictAutoswitch = Settings.Instance.ActiveAutoSwitchHotkeys.ToList()[keyInt - 1];
+                    Settings.Instance.ActiveAutoSwitchHotkeys.Remove(dictAutoswitch.Key);
+                    Settings.Instance.ActiveAutoSwitchHotkeys.Add(newHotkey, dictAutoswitch.Value);
+                    break;
+                case int n when (n > autosCount && n <= prayerCount + autosCount):
+                    var index = keyInt - autosCount - 1;
+                    var dictAutoPrayer = Settings.Instance.ActivePrayerHotkeys.ToList()[index];
+                    Settings.Instance.ActivePrayerHotkeys.Remove(dictAutoPrayer.Key);
+                    Settings.Instance.ActivePrayerHotkeys.Add(dictAutoPrayer.Key, newHotkey);
+                    break;
+                case int n when (n > autosCount + prayerCount && n <= prayerCount + autosCount + specialCount):
+                    var specialIndex = keyInt - autosCount - prayerCount - 1;
+                    var dictSpecialAtt = Settings.Instance.SpecialAttackHotkeys.ToList()[specialIndex];
+                    Settings.Instance.SpecialAttackHotkeys.Remove(dictSpecialAtt.Key);
+                    Settings.Instance.SpecialAttackHotkeys.Add(newHotkey, dictSpecialAtt.Value);
+                    break;
+                case int n when (n == autosCount + prayerCount + specialCount + 1):
+                    Settings.Instance.ExitKey = newHotkey;
+                    break;
+                default:
+                    return;
+
             }
         }
 
         private static void PrintHotkeys(out int count)
         {
+            Console.Clear();
             count = 1;
             if (Settings.Instance.ActiveAutoSwitchHotkeys.Count > 0)
             {
@@ -464,6 +491,8 @@ namespace OSRSAutoSwitcher.Interaction
                 } 
             }
 
+            Console.WriteLine();
+
             if (Settings.Instance.ActivePrayerHotkeys.Count > 0)
             {
                 Console.WriteLine("Prayer hotkeys");
@@ -474,6 +503,7 @@ namespace OSRSAutoSwitcher.Interaction
                 }
             }
 
+            Console.WriteLine();
 
             if (Settings.Instance.SpecialAttackHotkeys.Count > 0)
             {
@@ -484,7 +514,13 @@ namespace OSRSAutoSwitcher.Interaction
                     count++;
                 }
             }
+
+            Console.WriteLine();
+
+            Console.WriteLine("Application settings:");
             Console.WriteLine(count + ". Hotkey for closing OSRS-AutoSwitcher: " + Settings.Instance.ExitKey);
+            Console.WriteLine(count + 1 + ". Return to main menu");
+            Console.WriteLine();
         }
     }
 }
