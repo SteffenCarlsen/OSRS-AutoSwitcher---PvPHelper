@@ -1,6 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading;
+using System.Windows.Forms;
+using LowLevelInput.Hooks;
+using OSRSAutoSwitcher.Globals;
+using OSRSAutoSwitcher.Interaction;
+using OSRSAutoSwitcher.Model;
 
 namespace OSRSAutoSwitcher.Features
 {
@@ -74,6 +80,42 @@ namespace OSRSAutoSwitcher.Features
             Console.WriteLine("|             |");
             Console.WriteLine("|25  26  27 28|");
             Console.WriteLine("+-------------+");
+        }
+
+        public static bool ActiveSwitches(VirtualKeyCode key, bool swappedPrayers)
+        {
+            bool swappedItems = false;
+            foreach (var autoSwitchHotkey in Settings.Instance.ActiveAutoSwitchHotkeys)
+            {
+                var activeKey = LowLevelInput.Converters.KeyCodeConverter.ToVirtualKeyCode((int)autoSwitchHotkey.Key);
+                if (activeKey != key) continue;
+                swappedItems = true;
+                // If we just swapped prayers, make a short delay
+                if (swappedPrayers)
+                {
+                    Thread.Sleep(50);
+                }
+
+                if (Settings.Instance.ActiveAutoSwitchHotkeys != null)
+                {
+                    var oldPos = Cursor.Position;
+                    foreach (var locations in autoSwitchHotkey.Value)
+                    {
+                        SendKeys.SendWait("{" + Settings.Instance.InventFKey + "}");
+                        Thread.Sleep(10);
+                        WindowsImports.SetCursorPos(Settings.Instance.InventorySlots[locations].X, Settings.Instance.InventorySlots[locations].Y);
+                        WindowsImports.LeftMouseClick(Settings.Instance.InventorySlots[locations].X, Settings.Instance.InventorySlots[locations].Y);
+                        Thread.Sleep(50);
+                    }
+
+                    if (Settings.Instance.ReturnToOldPos)
+                    {
+                        Mouse.LinearSmoothMove(oldPos, Settings.Instance.Speed, false);
+                    }
+                }
+            }
+
+            return swappedItems;
         }
 
     }

@@ -54,6 +54,9 @@
     <StartupObject>OSRSAutoSwitcher.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="LowLevelInput, Version=1.36.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\LowLevelInput.Net.1.36.6\lib\LowLevelInput.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -71,6 +74,7 @@
   <ItemGroup>
     <Compile Include="Extensions.cs" />
     <Compile Include="Features\AutoSwitch.cs" />
+    <Compile Include="Features\SpecialAttack.cs" />
     <Compile Include="Interaction\CLI.cs" />
     <Compile Include="Globals\JsonObjectSaveLoad.cs" />
     <Compile Include="Interaction\Mouse.cs" />

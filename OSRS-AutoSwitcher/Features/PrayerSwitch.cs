@@ -1,6 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Threading;
+using System.Windows.Forms;
+using LowLevelInput.Converters;
+using LowLevelInput.Hooks;
+using OSRSAutoSwitcher.Interaction;
+using OSRSAutoSwitcher.Model;
 
 namespace OSRSAutoSwitcher.Features
 {
@@ -26,6 +32,27 @@ namespace OSRSAutoSwitcher.Features
                 oldX = new Point(oldX.X, oldX.Y + distY);
             }
             return PrayerBook.ActivePrayerBook;
+        }
+
+        public static bool ActivePrayer(VirtualKeyCode key)
+        {
+            bool swappedPrayers = false;
+            foreach (var activePrayerHotkey in Settings.Instance.ActivePrayerHotkeys)
+            {
+                var activeKey = LowLevelInput.Converters.KeyCodeConverter.ToVirtualKeyCode((int)activePrayerHotkey.Value);
+                if (activeKey != key) continue;
+                swappedPrayers = true;
+                var oldPos = Cursor.Position;
+                SendKeys.SendWait("{" + Settings.Instance.PrayerFkey + "}");
+                Thread.Sleep(10);
+                Mouse.LinearSmoothMove(Settings.Instance.Prayers[activePrayerHotkey.Key], Settings.Instance.Speed, true);
+                if (Settings.Instance.ReturnToOldPos)
+                {
+                    Mouse.LinearSmoothMove(oldPos, Settings.Instance.Speed, false);
+                }
+            }
+
+            return swappedPrayers;
         }
     }
     public class PrayerBook
