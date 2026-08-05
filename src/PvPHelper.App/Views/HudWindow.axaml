@@ -1,0 +1,23 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:services="using:PvPHelper.App.Services"
+        x:Class="PvPHelper.App.Views.HudWindow"
+        x:DataType="services:SessionState"
+        WindowDecorations="None" Background="Transparent" Topmost="True"
+        ShowInTaskbar="False" CanResize="False" SizeToContent="WidthAndHeight"
+        Title="PvP Helper HUD">
+
+  <Border Background="#E617132C" CornerRadius="14" BorderBrush="{StaticResource StrongBorderBrush}"
+          BorderThickness="1" Padding="14,10" PointerPressed="OnDrag">
+    <StackPanel Orientation="Horizontal" Spacing="12">
+      <Ellipse Width="9" Height="9" VerticalAlignment="Center" Fill="{StaticResource AccentBrightBrush}"/>
+      <TextBlock Text="{Binding ArmLabel}" Classes="mono" FontSize="11"
+                 Foreground="{StaticResource AccentBrightBrush}" VerticalAlignment="Center"/>
+      <TextBlock Text="{Binding RunningTime}" Classes="mono" FontSize="12.5"
+                 Foreground="{StaticResource TextSecondaryBrush}" VerticalAlignment="Center"/>
+      <Border Background="{StaticResource BgVoidBrush}" CornerRadius="5" Padding="6,2" VerticalAlignment="Center">
+        <TextBlock Text="F8" Classes="mono" FontSize="10" Foreground="{StaticResource TextMutedBrush}"/>
+      </Border>
+    </StackPanel>
+  </Border>
+</Window>

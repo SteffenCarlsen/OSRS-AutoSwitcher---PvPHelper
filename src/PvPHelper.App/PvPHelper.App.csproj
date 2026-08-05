@@ -28,4 +28,8 @@
     <ProjectReference Include="..\PvPHelper.Core\PvPHelper.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <AvaloniaResource Include="..\..\icons8-intelligence-64.ico" Link="Assets/app.ico" />
+  </ItemGroup>
+
 </Project>
