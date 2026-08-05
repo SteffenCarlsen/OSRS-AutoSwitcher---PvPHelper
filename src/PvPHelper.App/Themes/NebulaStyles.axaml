@@ -162,6 +162,18 @@
     <Setter Property="BorderBrush" Value="{StaticResource StrongBorderBrush}"/>
   </Style>
 
+  <Style Selector="Button.danger">
+    <Setter Property="Background" Value="#14FB6F92"/>
+    <Setter Property="Foreground" Value="{StaticResource DangerBrush}"/>
+    <Setter Property="BorderBrush" Value="#40FB6F92"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="CornerRadius" Value="10"/>
+    <Setter Property="Padding" Value="13,8"/>
+  </Style>
+  <Style Selector="Button.danger:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="#28FB6F92"/>
+  </Style>
+
   <!-- ===== Bindings rows ===== -->
   <Style Selector="Border.brow">
     <Setter Property="Background" Value="{StaticResource SurfaceBrush}"/>
@@ -221,6 +233,66 @@
   <!-- ToggleSwitch accent -->
   <Style Selector="ToggleSwitch:checked /template/ Border#SwitchKnobBounds">
     <Setter Property="Background" Value="{StaticResource AccentDeepBrush}"/>
+  </Style>
+
+  <!-- Inputs -->
+  <Style Selector="TextBox">
+    <Setter Property="Background" Value="{StaticResource BgVoidBrush}"/>
+    <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+    <Setter Property="BorderBrush" Value="{StaticResource HairlineBrush}"/>
+    <Setter Property="CornerRadius" Value="10"/>
+    <Setter Property="Padding" Value="10,8"/>
+  </Style>
+  <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
+    <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+  </Style>
+
+  <!-- Card heading + description -->
+  <Style Selector="TextBlock.cardTitle">
+    <Setter Property="FontSize" Value="14"/>
+    <Setter Property="FontWeight" Value="SemiBold"/>
+  </Style>
+  <Style Selector="TextBlock.cardDesc">
+    <Setter Property="Foreground" Value="{StaticResource TextMutedBrush}"/>
+    <Setter Property="FontSize" Value="12"/>
+  </Style>
+
+  <!-- Setting row -->
+  <Style Selector="Border.settingRow">
+    <Setter Property="BorderBrush" Value="{StaticResource HairlineBrush}"/>
+    <Setter Property="BorderThickness" Value="0,1,0,0"/>
+    <Setter Property="Padding" Value="0,11"/>
+  </Style>
+
+  <!-- Inventory slot cells -->
+  <Style Selector="Button.slot">
+    <Setter Property="Background" Value="{StaticResource BgNebulaBrush}"/>
+    <Setter Property="BorderBrush" Value="{StaticResource StrongBorderBrush}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="CornerRadius" Value="8"/>
+    <Setter Property="Padding" Value="0"/>
+  </Style>
+  <Style Selector="Button.slot:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{StaticResource SurfaceRaisedBrush}"/>
+  </Style>
+  <Style Selector="Button.slot.selected /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{StaticResource AccentGradient}"/>
+  </Style>
+  <Style Selector="TextBlock.slotNum">
+    <Setter Property="Foreground" Value="{StaticResource TextMutedBrush}"/>
+    <Setter Property="FontSize" Value="9"/>
+    <Setter Property="FontFamily" Value="Cascadia Code,Consolas,monospace"/>
+    <Setter Property="HorizontalAlignment" Value="Left"/>
+    <Setter Property="VerticalAlignment" Value="Top"/>
+    <Setter Property="Margin" Value="5,3,0,0"/>
+  </Style>
+  <Style Selector="TextBlock.slotOrd">
+    <Setter Property="Foreground" Value="#FFFFFF"/>
+    <Setter Property="FontWeight" Value="Bold"/>
+    <Setter Property="FontSize" Value="16"/>
+    <Setter Property="FontFamily" Value="Cascadia Code,Consolas,monospace"/>
+    <Setter Property="HorizontalAlignment" Value="Center"/>
+    <Setter Property="VerticalAlignment" Value="Center"/>
   </Style>
 
 </Styles>

@@ -3,15 +3,6 @@ namespace PvPHelper.App.ViewModels;
 // Lightweight placeholders for sections whose full UI arrives in later phases.
 // Each still routes through the sidebar + ViewLocator and renders the themed PlaceholderView.
 
-public sealed class AutoSwitchViewModel : PageViewModelBase
-{
-    public override string Title => "Auto-Switch";
-    public override string Subtitle => "Bind gear switches to a key";
-    public override string Glyph => "⚔";
-    public override string Blurb =>
-        "Visual 4×7 inventory picker with click-order selection, inline hotkey capture (incl. Mouse 4/5), and dry-run testing.";
-}
-
 public sealed class PrayersViewModel : PageViewModelBase
 {
     public override string Title => "Prayers";
@@ -46,13 +37,4 @@ public sealed class ProfilesViewModel : PageViewModelBase
     public override string Glyph => "⛃";
     public override string Blurb =>
         "Save, load, duplicate, import and export presets — plus one-click import of legacy console configs.";
-}
-
-public sealed class SettingsViewModel : PageViewModelBase
-{
-    public override string Title => "Settings";
-    public override string Subtitle => "Anti-ban, client mode & runtime";
-    public override string Glyph => "⚙";
-    public override string Blurb =>
-        "Movement humanisation, Fixed / Resizable / Stretched client mode, tray + HUD, and calibration.";
 }

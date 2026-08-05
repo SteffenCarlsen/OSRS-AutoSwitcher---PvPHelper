@@ -1,0 +1,121 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:PvPHelper.App.ViewModels"
+             x:Class="PvPHelper.App.Views.SettingsView"
+             x:DataType="vm:SettingsViewModel">
+
+  <StackPanel Spacing="16">
+
+    <StackPanel Orientation="Horizontal" Spacing="12">
+      <TextBlock Classes="h1" Text="Settings" VerticalAlignment="Bottom"/>
+      <TextBlock Classes="sub" Text="Anti-ban, client &amp; input" VerticalAlignment="Bottom" Margin="0,0,0,3"/>
+    </StackPanel>
+
+    <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="16" RowSpacing="16">
+
+      <!-- Anti-ban -->
+      <Border Classes="card" Grid.Row="0" Grid.Column="0">
+        <StackPanel Spacing="4">
+          <TextBlock Classes="cardTitle" Text="Anti-ban / humanisation"/>
+          <TextBlock Classes="cardDesc" Text="Randomised movement mirrors the console engine — tune the feel."/>
+
+          <Grid ColumnDefinitions="*,Auto" Margin="0,14,0,0">
+            <TextBlock Text="Mouse speed" VerticalAlignment="Center"/>
+            <TextBlock Grid.Column="1" Classes="mono muted" Text="{Binding Speed, StringFormat={}{0:0} steps}"/>
+          </Grid>
+          <Slider Minimum="1" Maximum="40" Value="{Binding Speed, Mode=TwoWay}"/>
+          <TextBlock Classes="cardDesc" Text="Lower = faster."/>
+
+          <Grid ColumnDefinitions="*,Auto" Margin="0,10,0,0">
+            <TextBlock Text="Click jitter radius" VerticalAlignment="Center"/>
+            <TextBlock Grid.Column="1" Classes="mono muted" Text="{Binding JitterRadius, StringFormat={}±{0:0} px}"/>
+          </Grid>
+          <Slider Minimum="0" Maximum="15" Value="{Binding JitterRadius, Mode=TwoWay}"/>
+
+          <Border Classes="settingRow">
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Text="Return to old position" VerticalAlignment="Center"/>
+              <ToggleSwitch Grid.Column="1" OnContent="" OffContent="" IsChecked="{Binding ReturnToOldPos, Mode=TwoWay}"/>
+            </Grid>
+          </Border>
+          <Border Classes="settingRow">
+            <Grid ColumnDefinitions="*,Auto">
+              <StackPanel>
+                <TextBlock Text="Curved paths"/>
+                <TextBlock Classes="cardDesc" Text="Slight arc instead of straight lines"/>
+              </StackPanel>
+              <ToggleSwitch Grid.Column="1" OnContent="" OffContent="" IsChecked="{Binding CurvedPaths, Mode=TwoWay}"/>
+            </Grid>
+          </Border>
+        </StackPanel>
+      </Border>
+
+      <!-- Client mode -->
+      <Border Classes="card" Grid.Row="0" Grid.Column="1">
+        <StackPanel Spacing="4">
+          <TextBlock Classes="cardTitle" Text="Client mode"/>
+          <TextBlock Classes="cardDesc" Text="Drives grid spacing so Fixed / Resizable / Stretched all line up."/>
+          <StackPanel Orientation="Horizontal" Spacing="18" Margin="0,14,0,0">
+            <RadioButton GroupName="client" Content="Fixed" IsChecked="{Binding IsFixed, Mode=TwoWay}"/>
+            <RadioButton GroupName="client" Content="Resizable" IsChecked="{Binding IsResizable, Mode=TwoWay}"/>
+            <RadioButton GroupName="client" Content="Stretched" IsChecked="{Binding IsStretched, Mode=TwoWay}"/>
+          </StackPanel>
+          <Grid ColumnDefinitions="*,Auto" Margin="0,16,0,0">
+            <TextBlock Text="UI scale" VerticalAlignment="Center"/>
+            <TextBlock Grid.Column="1" Classes="mono muted" Text="{Binding UiScalePercent, StringFormat={}{0:0}%}"/>
+          </Grid>
+          <Slider Minimum="50" Maximum="200" Value="{Binding UiScalePercent, Mode=TwoWay}"/>
+        </StackPanel>
+      </Border>
+
+      <!-- Input mode -->
+      <Border Classes="card" Grid.Row="1" Grid.Column="0">
+        <StackPanel Spacing="4">
+          <TextBlock Classes="cardTitle" Text="Input delivery"/>
+          <TextBlock Classes="cardDesc" Text="How synthetic input reaches the game."/>
+          <StackPanel Orientation="Horizontal" Spacing="18" Margin="0,14,0,0">
+            <RadioButton GroupName="input" Content="Foreground (SendInput)" IsChecked="{Binding IsForeground, Mode=TwoWay}"/>
+            <RadioButton GroupName="input" Content="Background (PostMessage)" IsChecked="{Binding IsBackground, Mode=TwoWay}"/>
+          </StackPanel>
+          <TextBlock Classes="cardDesc" Text="{Binding InputModeHint}" Margin="0,8,0,0"/>
+
+          <StackPanel Margin="0,14,0,0" Spacing="8" IsEnabled="{Binding IsBackground}">
+            <TextBlock Text="Target window title" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}"/>
+            <Grid ColumnDefinitions="*,Auto" >
+              <TextBox PlaceholderText="RuneLite" Text="{Binding TargetWindowTitle, Mode=TwoWay}"/>
+              <Button Grid.Column="1" Classes="ghost" Content="Check" Margin="8,0,0,0" Command="{Binding CheckWindowCommand}"/>
+            </Grid>
+            <TextBlock Classes="mono muted" Text="{Binding WindowStatus}" FontSize="11.5"/>
+          </StackPanel>
+        </StackPanel>
+      </Border>
+
+      <!-- Calibration status -->
+      <Border Classes="card" Grid.Row="1" Grid.Column="1">
+        <StackPanel Spacing="4">
+          <TextBlock Classes="cardTitle" Text="Calibration"/>
+          <TextBlock Classes="cardDesc" Text="Captured anchor points. The click-to-anchor overlay lands next."/>
+          <Border Classes="settingRow" Margin="0,10,0,0">
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Text="Inventory anchor"/>
+              <TextBlock Grid.Column="1" Classes="mono" Text="{Binding InventoryStatus}"/>
+            </Grid>
+          </Border>
+          <Border Classes="settingRow">
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Text="Prayer anchor"/>
+              <TextBlock Grid.Column="1" Classes="mono" Text="{Binding PrayerStatus}"/>
+            </Grid>
+          </Border>
+          <Border Classes="settingRow">
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Text="Special-attack bar"/>
+              <TextBlock Grid.Column="1" Classes="mono" Text="{Binding SpecStatus}"/>
+            </Grid>
+          </Border>
+        </StackPanel>
+      </Border>
+
+    </Grid>
+  </StackPanel>
+</UserControl>
