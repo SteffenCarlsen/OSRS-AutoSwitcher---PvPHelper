@@ -1,0 +1,102 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:PvPHelper.App.ViewModels"
+             xmlns:ctrl="using:PvPHelper.App.Controls"
+             x:Class="PvPHelper.App.Views.AutoSwitchView"
+             x:DataType="vm:AutoSwitchViewModel">
+
+  <StackPanel Spacing="14">
+
+    <Grid ColumnDefinitions="*,Auto">
+      <StackPanel Orientation="Horizontal" Spacing="12">
+        <TextBlock Classes="h1" Text="Auto-Switch" VerticalAlignment="Bottom"/>
+        <TextBlock Classes="sub" Text="Bind gear switches to a key" VerticalAlignment="Bottom" Margin="0,0,0,3"/>
+      </StackPanel>
+      <Button Grid.Column="1" Classes="primary" Content="＋ New switch" Command="{Binding AddCommand}"/>
+    </Grid>
+
+    <Grid ColumnDefinitions="270,*" ColumnSpacing="16">
+
+      <!-- List -->
+      <Border Classes="card" Grid.Column="0" Padding="8">
+        <ListBox ItemsSource="{Binding Switches}" SelectedItem="{Binding Selected, Mode=TwoWay}"
+                 Background="Transparent" BorderThickness="0">
+          <ListBox.ItemTemplate>
+            <DataTemplate x:DataType="vm:SwitchItemVm">
+              <Grid ColumnDefinitions="Auto,*,Auto" Height="40">
+                <Border Classes="rowIco">
+                  <TextBlock Text="⚔" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+                <StackPanel Grid.Column="1" Margin="11,0" VerticalAlignment="Center">
+                  <TextBlock Text="{Binding DisplayName}" FontSize="13" FontWeight="Medium"/>
+                  <TextBlock Text="{Binding SlotSummary}" Classes="muted" FontSize="11"/>
+                </StackPanel>
+                <Border Grid.Column="2" Classes="keyChip"><TextBlock Text="{Binding HotkeyText}"/></Border>
+              </Grid>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+      </Border>
+
+      <!-- Editor -->
+      <Panel Grid.Column="1">
+
+        <Border Classes="card" IsVisible="{Binding !HasSelection}" MinHeight="300">
+          <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="10">
+            <TextBlock Text="⚔" FontSize="30" HorizontalAlignment="Center" Foreground="{StaticResource TextMutedBrush}"/>
+            <TextBlock Text="No switch selected" Classes="secondary" HorizontalAlignment="Center"/>
+            <TextBlock Text="Add a switch to start binding gear." Classes="muted" HorizontalAlignment="Center"/>
+          </StackPanel>
+        </Border>
+
+        <Border Classes="card" IsVisible="{Binding HasSelection}">
+          <Grid ColumnDefinitions="Auto,*" ColumnSpacing="22">
+
+            <!-- Inventory picker -->
+            <StackPanel Grid.Column="0" Spacing="8">
+              <StackPanel Orientation="Horizontal" Spacing="8">
+                <TextBlock Text="Inventory slots" FontSize="12" FontWeight="Medium" Foreground="{StaticResource TextSecondaryBrush}"/>
+                <TextBlock Text="click in order" Classes="muted" FontSize="11" VerticalAlignment="Center"/>
+              </StackPanel>
+              <Border Background="{StaticResource BgVoidBrush}" BorderBrush="{StaticResource StrongBorderBrush}"
+                      BorderThickness="1" CornerRadius="12" Padding="8">
+                <ItemsControl ItemsSource="{Binding Selected.Cells}" Width="180">
+                  <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate><UniformGrid Columns="4"/></ItemsPanelTemplate>
+                  </ItemsControl.ItemsPanel>
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:SlotCellVm">
+                      <Button Classes="slot" Classes.selected="{Binding IsSelected}"
+                              Command="{Binding ToggleCommand}" Width="40" Height="40" Margin="2">
+                        <Panel>
+                          <TextBlock Text="{Binding Number}" Classes="slotNum"/>
+                          <TextBlock Text="{Binding OrdinalText}" Classes="slotOrd"/>
+                        </Panel>
+                      </Button>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </Border>
+              <TextBlock Text="{Binding Selected.SlotSummary}" Classes="muted" FontSize="12"/>
+            </StackPanel>
+
+            <!-- Fields -->
+            <StackPanel Grid.Column="1" Spacing="16">
+              <StackPanel Spacing="8">
+                <TextBlock Text="Name" FontSize="12" FontWeight="Medium" Foreground="{StaticResource TextSecondaryBrush}"/>
+                <TextBox Text="{Binding Selected.Name, Mode=TwoWay}"/>
+              </StackPanel>
+              <StackPanel Spacing="8">
+                <TextBlock Text="Hotkey" FontSize="12" FontWeight="Medium" Foreground="{StaticResource TextSecondaryBrush}"/>
+                <ctrl:HotkeyCaptureBox Hotkey="{Binding Selected.Hotkey, Mode=TwoWay}"/>
+              </StackPanel>
+              <Button Classes="danger" Content="Delete switch" HorizontalAlignment="Left"
+                      Command="{Binding DeleteCommand}" CommandParameter="{Binding Selected}"/>
+            </StackPanel>
+
+          </Grid>
+        </Border>
+      </Panel>
+    </Grid>
+  </StackPanel>
+</UserControl>

@@ -1,0 +1,133 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:PvPHelper.App.ViewModels"
+             xmlns:ctrl="using:PvPHelper.App.Controls"
+             x:Class="PvPHelper.App.Views.SpecView"
+             x:DataType="vm:SpecViewModel">
+
+  <StackPanel Spacing="14">
+
+    <Grid ColumnDefinitions="*,Auto">
+      <StackPanel Orientation="Horizontal" Spacing="12">
+        <TextBlock Classes="h1" Text="Spec Helper" VerticalAlignment="Bottom"/>
+        <TextBlock Classes="sub" Text="Equip a spec weapon, activate, click the target" VerticalAlignment="Bottom" Margin="0,0,0,3"/>
+      </StackPanel>
+      <Button Grid.Column="1" Classes="primary" Content="＋ New spec" Command="{Binding AddCommand}"/>
+    </Grid>
+
+    <Grid ColumnDefinitions="270,*" ColumnSpacing="16">
+
+      <!-- List -->
+      <Border Classes="card" Grid.Column="0" Padding="8">
+        <ListBox ItemsSource="{Binding Specs}" SelectedItem="{Binding Selected, Mode=TwoWay}"
+                 Background="Transparent" BorderThickness="0">
+          <ListBox.ItemTemplate>
+            <DataTemplate x:DataType="vm:SpecItemVm">
+              <Grid ColumnDefinitions="Auto,*,Auto" Height="40">
+                <Border Classes="rowIco">
+                  <TextBlock Text="☄" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+                <StackPanel Grid.Column="1" Margin="11,0" VerticalAlignment="Center">
+                  <TextBlock Text="{Binding DisplayName}" FontSize="13" FontWeight="Medium"/>
+                  <TextBlock Text="{Binding Summary}" Classes="muted" FontSize="11"/>
+                </StackPanel>
+                <Border Grid.Column="2" Classes="keyChip"><TextBlock Text="{Binding HotkeyText}"/></Border>
+              </Grid>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+      </Border>
+
+      <!-- Editor -->
+      <Panel Grid.Column="1">
+        <Border Classes="card" IsVisible="{Binding !HasSelection}" MinHeight="300">
+          <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="10">
+            <TextBlock Text="☄" FontSize="30" HorizontalAlignment="Center" Foreground="{StaticResource TextMutedBrush}"/>
+            <TextBlock Text="No spec selected" Classes="secondary" HorizontalAlignment="Center"/>
+            <TextBlock Text="Add a spec to configure it." Classes="muted" HorizontalAlignment="Center"/>
+          </StackPanel>
+        </Border>
+
+        <Border Classes="card" IsVisible="{Binding HasSelection}">
+          <Grid ColumnDefinitions="Auto,*" ColumnSpacing="22">
+
+            <!-- Weapon slots -->
+            <StackPanel Grid.Column="0" Spacing="8">
+              <TextBlock Text="Spec weapon slots" FontSize="12" FontWeight="Medium" Foreground="{StaticResource TextSecondaryBrush}"/>
+              <Border Background="{StaticResource BgVoidBrush}" BorderBrush="{StaticResource StrongBorderBrush}"
+                      BorderThickness="1" CornerRadius="12" Padding="8">
+                <ItemsControl ItemsSource="{Binding Selected.Cells}" Width="180">
+                  <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate><UniformGrid Columns="4"/></ItemsPanelTemplate>
+                  </ItemsControl.ItemsPanel>
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:SlotCellVm">
+                      <Button Classes="slot" Classes.selected="{Binding IsSelected}"
+                              Command="{Binding ToggleCommand}" Width="40" Height="40" Margin="2">
+                        <Panel>
+                          <TextBlock Text="{Binding Number}" Classes="slotNum"/>
+                          <TextBlock Text="{Binding OrdinalText}" Classes="slotOrd"/>
+                        </Panel>
+                      </Button>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </Border>
+            </StackPanel>
+
+            <!-- Fields -->
+            <StackPanel Grid.Column="1" Spacing="14">
+              <StackPanel Spacing="8">
+                <TextBlock Text="Name" FontSize="12" FontWeight="Medium" Foreground="{StaticResource TextSecondaryBrush}"/>
+                <TextBox Text="{Binding Selected.Name, Mode=TwoWay}"/>
+              </StackPanel>
+              <StackPanel Spacing="8">
+                <TextBlock Text="Hotkey" FontSize="12" FontWeight="Medium" Foreground="{StaticResource TextSecondaryBrush}"/>
+                <ctrl:HotkeyCaptureBox Hotkey="{Binding Selected.Hotkey, Mode=TwoWay}"/>
+              </StackPanel>
+
+              <Border Classes="settingRow">
+                <Grid ColumnDefinitions="*,Auto">
+                  <StackPanel>
+                    <TextBlock Text="Wait for spec bar"/>
+                    <TextBlock Classes="cardDesc" Text="Pause for the spec bar to appear before clicking"/>
+                  </StackPanel>
+                  <ToggleSwitch Grid.Column="1" OnContent="" OffContent="" IsChecked="{Binding Selected.WaitForSpecBar, Mode=TwoWay}"/>
+                </Grid>
+              </Border>
+
+              <Border Classes="settingRow" IsEnabled="{Binding Selected.WaitForSpecBar}">
+                <Grid ColumnDefinitions="*,Auto">
+                  <StackPanel>
+                    <TextBlock Text="Spec bar delay"/>
+                    <TextBlock Classes="cardDesc" Text="Milliseconds to wait (default 450)"/>
+                  </StackPanel>
+                  <NumericUpDown Grid.Column="1" Value="{Binding Selected.SpecBarDelay, Mode=TwoWay}"
+                                 Minimum="0" Maximum="2000" Increment="25" Width="128" VerticalAlignment="Center"/>
+                </Grid>
+              </Border>
+
+              <Border Classes="settingRow">
+                <Grid ColumnDefinitions="*,Auto">
+                  <StackPanel>
+                    <TextBlock Text="Spec times"/>
+                    <TextBlock Classes="cardDesc" Text="Times to click the special-attack bar"/>
+                  </StackPanel>
+                  <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                    <Button Classes="stepper" Content="−" Command="{Binding Selected.DecrementTimesCommand}"/>
+                    <TextBlock Text="{Binding Selected.SpecTimes}" Classes="mono" Width="28" TextAlignment="Center" VerticalAlignment="Center"/>
+                    <Button Classes="stepper" Content="＋" Command="{Binding Selected.IncrementTimesCommand}"/>
+                  </StackPanel>
+                </Grid>
+              </Border>
+
+              <Button Classes="danger" Content="Delete spec" HorizontalAlignment="Left"
+                      Command="{Binding DeleteCommand}" CommandParameter="{Binding Selected}"/>
+            </StackPanel>
+
+          </Grid>
+        </Border>
+      </Panel>
+    </Grid>
+  </StackPanel>
+</UserControl>

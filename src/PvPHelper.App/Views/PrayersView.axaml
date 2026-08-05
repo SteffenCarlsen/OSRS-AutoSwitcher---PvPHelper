@@ -1,0 +1,77 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:PvPHelper.App.ViewModels"
+             xmlns:ctrl="using:PvPHelper.App.Controls"
+             x:Class="PvPHelper.App.Views.PrayersView"
+             x:DataType="vm:PrayersViewModel">
+
+  <StackPanel Spacing="16">
+
+    <Grid ColumnDefinitions="*,Auto">
+      <StackPanel Orientation="Horizontal" Spacing="12">
+        <TextBlock Classes="h1" Text="Prayers" VerticalAlignment="Bottom"/>
+        <TextBlock Classes="sub" Text="Bind a prayer to a key" VerticalAlignment="Bottom" Margin="0,0,0,3"/>
+      </StackPanel>
+      <Button Grid.Column="1" Classes="primary" Content="＋ New prayer" Command="{Binding AddCommand}"/>
+    </Grid>
+
+    <Grid ColumnDefinitions="280,*" ColumnSpacing="16">
+
+      <!-- Bindings list -->
+      <Border Classes="card" Grid.Column="0" Padding="8">
+        <ListBox ItemsSource="{Binding Bindings}" SelectedItem="{Binding Selected, Mode=TwoWay}"
+                 Background="Transparent" BorderThickness="0">
+          <ListBox.ItemTemplate>
+            <DataTemplate x:DataType="vm:PrayerBindingVm">
+              <Grid ColumnDefinitions="Auto,*,Auto" Height="40">
+                <Border Classes="rowIco" Width="28" Height="28">
+                  <TextBlock Text="✦" FontSize="13" HorizontalAlignment="Center" VerticalAlignment="Center"
+                             Foreground="{StaticResource AccentBrightBrush}"/>
+                </Border>
+                <TextBlock Grid.Column="1" Text="{Binding PrayerName}" VerticalAlignment="Center"
+                           Margin="10,0" FontSize="12.5"/>
+                <Border Grid.Column="2" Classes="keyChip"><TextBlock Text="{Binding HotkeyText}"/></Border>
+              </Grid>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+      </Border>
+
+      <!-- Editor + book -->
+      <Border Classes="card" Grid.Column="1">
+        <StackPanel Spacing="16">
+
+          <!-- Selected binding controls -->
+          <Grid ColumnDefinitions="*,Auto" IsVisible="{Binding HasSelection}">
+            <StackPanel Spacing="8">
+              <TextBlock Text="{Binding Selected.PrayerName, StringFormat='Binding: {0}'}"
+                         FontSize="14" FontWeight="SemiBold"/>
+              <ctrl:HotkeyCaptureBox Hotkey="{Binding Selected.Hotkey, Mode=TwoWay}"/>
+            </StackPanel>
+            <Button Grid.Column="1" Classes="danger" Content="Delete" VerticalAlignment="Top"
+                    Command="{Binding DeleteCommand}" CommandParameter="{Binding Selected}"/>
+          </Grid>
+
+          <TextBlock Text="Click a prayer below to create a binding." Classes="muted"
+                     IsVisible="{Binding !HasSelection}"/>
+
+          <Border BorderBrush="{StaticResource HairlineBrush}" BorderThickness="0,1,0,0" Padding="0,14,0,0">
+            <ItemsControl ItemsSource="{Binding Book}">
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate><UniformGrid Columns="5"/></ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="vm:PrayerCellVm">
+                  <Button Classes="pray" Classes.selected="{Binding IsSelected}" Command="{Binding PickCommand}" Margin="3">
+                    <TextBlock Text="{Binding Name}" FontSize="11" TextAlignment="Center" TextWrapping="Wrap"/>
+                  </Button>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </Border>
+
+        </StackPanel>
+      </Border>
+    </Grid>
+  </StackPanel>
+</UserControl>

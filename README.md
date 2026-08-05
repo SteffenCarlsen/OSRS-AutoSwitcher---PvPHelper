@@ -1,62 +1,68 @@
-# OSRS AutoSwitcher v1.2
+# OSRS PvP Helper — Nebula
 
-## Description
+A modern **.NET 10 + Avalonia** desktop app for OldSchool RuneScape that automates equipment
+switching, prayer switching, and special attacks on global hotkeys. Windows-only, dark-mode-only,
+with a deep-space **"Nebula"** theme.
 
-![](https://i.imgur.com/zvplCXk.png)
+> I do not support or endorse breaking the RuneScape rules — if you get banned, that's on you.
 
-The AutoSwitcher is written in C# and is meant to be used with Windows. The AutoSwitcher is meant to be used for OldSchool RuneScape to switch equipment more reliably and faster. I do not support nor endorse cheating in RuneScape, if you get banned it is NOT my fault.
-
-A compiled version can be downloaded from the [release](https://github.com/SDCAAU/OSRS-AutoSwitcher/releases) section. Alternatively you can compile it yourself. It is tested to compile under Visual Studio 2017, is not tested anywhere else. 
-
-![](https://i.imgur.com/LRaaAba.gif)
+![Dashboard](docs/screenshots/dashboard-armed.png)
 
 ## Features
 
-* AutoSwitching (Duhh)
-* Changing speed
-* Going back to old mouse postion after switching
-* Hotkey selection
-* Supporting Fixed/Resizeable and stretched Fixed (RuneLite) //Temporarily not supported
-* Prayer switching on hotkey
-* Automatically special attack on target at mouse position
-* Saving and loading presets
+- **Auto-Switch** — bind a hotkey to a set of inventory slots; a visual 4×7 picker lets you click
+  slots in the exact order they should be clicked.
+- **Prayers** — bind any of the 29 prayers from a visual prayer book.
+- **Spec Helper** — equip a spec weapon, activate, and click the target N times, with an editable
+  spec-bar delay.
+- **Calibration** — capture anchor points by hovering the target in-game and pressing any key
+  (samples the real cursor via a global hook, so coordinates line up with playback).
+- **Hotkeys** — every binding plus the master arm/panic keys in one table, with conflict detection.
+  Keyboard and **Mouse 4/5** supported.
+- **Profiles** — save, load (hot-swap), duplicate, and delete presets.
+- **Settings** — anti-ban/humanisation, Fixed/Resizable/Stretched client mode, and **fully
+  configurable engine timings** (move step, pre-click, tab, action gap, switch-click, spec interval).
+- **Input delivery** — choose **Foreground** (SendInput, game must be focused) or **Background**
+  (PostMessage to the game window, no focus required — game-dependent).
+- **Runtime** — minimises to the system tray with a global arm/disarm hotkey and an always-on-top
+  status HUD while armed.
 
-## Built With
+## Screenshots
 
-* [Newtonsoft.Json](https://www.newtonsoft.com/json) - For saving and loading user settings
+| Auto-Switch | Prayers | Spec Helper |
+|---|---|---|
+| ![Auto-Switch](docs/screenshots/auto-switch.png) | ![Prayers](docs/screenshots/prayers.png) | ![Spec](docs/screenshots/spec-helper.png) |
+| **Calibration** | **Hotkeys** | **Settings** |
+| ![Calibration](docs/screenshots/calibration.png) | ![Hotkeys](docs/screenshots/hotkeys.png) | ![Settings](docs/screenshots/settings.png) |
 
-## Issues
-If there's any problems, feel free to open an Issue.
+## Build & run
+
+Requires the **.NET 10 SDK** (pinned in `global.json`).
+
+```bash
+dotnet run --project src/PvPHelper.App
+```
+
+Settings and profiles are stored as JSON in `%AppData%\OSRS-PvPHelper`.
+
+## Project layout
+
+```
+OSRS.PvPHelper.slnx
+└─ src/
+   ├─ PvPHelper.Core    # UI-agnostic domain + automation engine (models, grid math, input, persistence)
+   ├─ PvPHelper.App     # Avalonia 12 UI, dark-only Nebula theme, CommunityToolkit MVVM + DI
+   └─ PvPHelper.Tests   # unit tests
+tools/ScreenshotTool     # renders every page to docs/screenshots via Avalonia headless + Skia
+docs/DESIGN_SPEC.md      # the design specification
+```
+
+## Built with
+
+- [Avalonia](https://avaloniaui.net/) — cross-platform .NET UI (Windows-only here by choice)
+- [CommunityToolkit.Mvvm](https://learn.microsoft.com/dotnet/communitytoolkit/mvvm/)
+- [LowLevelInput.Net](https://www.nuget.org/packages/LowLevelInput.Net/) — global keyboard/mouse hook
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Changelog
-### [1.3] - 10-03-2020 - WIP
-In order to accomodate for mouse input (mouse4/5) and allow modification of existing configurations, I'm changing to a Low level input library and adding an extra option in the menu.
-- Added the option to change an existing configuration
-- Changing from GetAsyncKeyState to low level Input manager to support all types of input (WIP)
-### [1.2] - 23-02-2019
-Decided to rework the entire project since it started to get some attention from interested users. This is a WIP to rewrite the entire thing into an overall better application. Due to previous testing of functionaility being tedious, I decided to skip out on implementing a regular user interface and keep it console for now.
-#### Added/edited
-- Complete new Console UI
-- Reworked special attacking to supported weapons with no special attack bar
-- Reworked prayer helper to reliably change the correct prayers
-- All hotkeys are now done using GetAsyncKeyState for more reliable hotkeys and not relying on a library(That had wonky bugs anyway)
-#### Removed
-- Temporarily removed the PK Helper(Eating/Potions) till the rest of the functionality is improved
-### [1.0.1] - 21-09-2018
-#### Added
-- Special attack
-- Prayer usage
-- PK Helper(Eat/Potions/Prayer)
-#### Changed
-- Revamped hotkey implementation
-- Improved AutoSwitch logic
-- Added randomization to mouse movements and clicking
-#### Known Errors
-- WIP About-Page
-- Saving and Reloading presets do not work
-- Crashes during re-hooking of hotkeys
-- Does not always properly perform actions before a second hotkey hook
+MIT — see [LICENSE](LICENSE).

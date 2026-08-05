@@ -1,0 +1,9 @@
+<Project>
+
+  <!-- LowLevelInput.Net ships as a .NET Framework package; it runs fine on .NET 10 via the
+       compatibility shim (as the legacy console app already did). Silence the NU1701 notice. -->
+  <PropertyGroup>
+    <NoWarn>$(NoWarn);NU1701</NoWarn>
+  </PropertyGroup>
+
+</Project>

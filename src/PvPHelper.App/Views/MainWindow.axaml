@@ -1,0 +1,94 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:PvPHelper.App.ViewModels"
+        x:Class="PvPHelper.App.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="OSRS PvP Helper"
+        Width="1240" Height="700" MinWidth="900" MinHeight="560"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource BgBaseBrush}">
+
+  <Grid RowDefinitions="Auto,*">
+
+    <!-- ===== Title bar ===== -->
+    <Border Grid.Row="0" Classes="titlebar" PointerPressed="OnTitleBarPressed">
+      <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto" Height="42">
+        <Border Classes="logo" VerticalAlignment="Center"/>
+        <TextBlock Grid.Column="1" Text="OSRS PvP Helper" Margin="10,0,0,0"
+                   VerticalAlignment="Center" FontWeight="SemiBold" FontSize="13.5"/>
+        <Border Grid.Column="2" Classes="profilePill" Margin="12,0,0,0" VerticalAlignment="Center">
+          <StackPanel Orientation="Horizontal" Spacing="6">
+            <Ellipse Width="6" Height="6" Fill="{StaticResource OkBrush}" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding Session.Profile.Name}" FontSize="11.5"
+                       Foreground="{StaticResource TextSecondaryBrush}"/>
+          </StackPanel>
+        </Border>
+        <TextBlock Grid.Column="4" Classes="mono muted" Text="v2.0 · Nebula" FontSize="11" VerticalAlignment="Center"/>
+      </Grid>
+    </Border>
+
+    <!-- ===== Body ===== -->
+    <Grid Grid.Row="1" ColumnDefinitions="230,*">
+
+      <!-- Sidebar -->
+      <Border Classes="sidebar">
+        <DockPanel LastChildFill="True">
+
+          <!-- Footer arm toggle -->
+          <Border DockPanel.Dock="Bottom" Padding="12" BorderBrush="{StaticResource HairlineBrush}" BorderThickness="0,1,0,0">
+            <Button Classes="armMiniBtn" Command="{Binding Session.ToggleArmCommand}">
+              <Grid ColumnDefinitions="Auto,*">
+                <Border Classes="armDot" Classes.armed="{Binding Session.IsArmed}"
+                        Width="34" Height="19" VerticalAlignment="Center"/>
+                <StackPanel Grid.Column="1" Margin="11,0,0,0" VerticalAlignment="Center">
+                  <TextBlock Text="{Binding Session.ArmLabel}" FontWeight="SemiBold" FontSize="13"/>
+                  <TextBlock Text="Master toggle · F8" FontSize="11" Foreground="{StaticResource TextMutedBrush}"/>
+                </StackPanel>
+              </Grid>
+            </Button>
+          </Border>
+
+          <!-- Nav -->
+          <StackPanel Margin="10,14,10,0" Spacing="1">
+            <TextBlock Classes="navGroup" Text="COMBAT"/>
+            <ItemsControl ItemsSource="{Binding CombatNav}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="vm:NavItem">
+                  <Button Classes="nav" Classes.selected="{Binding IsSelected}"
+                          Command="{Binding SelectCommand}" Margin="0,1">
+                    <StackPanel Orientation="Horizontal" Spacing="11">
+                      <TextBlock Text="{Binding Glyph}" FontSize="15" Width="18" TextAlignment="Center"/>
+                      <TextBlock Text="{Binding Label}" FontSize="13.5" VerticalAlignment="Center"/>
+                    </StackPanel>
+                  </Button>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <TextBlock Classes="navGroup" Text="CONFIG" Margin="11,16,0,4"/>
+            <ItemsControl ItemsSource="{Binding ConfigNav}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="vm:NavItem">
+                  <Button Classes="nav" Classes.selected="{Binding IsSelected}"
+                          Command="{Binding SelectCommand}" Margin="0,1">
+                    <StackPanel Orientation="Horizontal" Spacing="11">
+                      <TextBlock Text="{Binding Glyph}" FontSize="15" Width="18" TextAlignment="Center"/>
+                      <TextBlock Text="{Binding Label}" FontSize="13.5" VerticalAlignment="Center"/>
+                    </StackPanel>
+                  </Button>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+
+        </DockPanel>
+      </Border>
+
+      <!-- Main content -->
+      <ScrollViewer Grid.Column="1" Padding="20,16" HorizontalScrollBarVisibility="Disabled">
+        <ContentControl Content="{Binding CurrentPage}"/>
+      </ScrollViewer>
+
+    </Grid>
+  </Grid>
+</Window>
