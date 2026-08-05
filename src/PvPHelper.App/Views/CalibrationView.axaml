@@ -1,0 +1,95 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:PvPHelper.App.ViewModels"
+             x:Class="PvPHelper.App.Views.CalibrationView"
+             x:DataType="vm:CalibrationViewModel">
+
+  <StackPanel Spacing="16">
+
+    <StackPanel Orientation="Horizontal" Spacing="12">
+      <TextBlock Classes="h1" Text="Calibration" VerticalAlignment="Bottom"/>
+      <TextBlock Classes="sub" Text="Anchor the inventory, prayers, and spec bar" VerticalAlignment="Bottom" Margin="0,0,0,3"/>
+    </StackPanel>
+
+    <!-- Status banner -->
+    <Border Classes="card" Classes.armed="{Binding IsCapturing}">
+      <Grid ColumnDefinitions="Auto,*,Auto">
+        <Ellipse Width="10" Height="10" VerticalAlignment="Center"
+                 Fill="{StaticResource AccentBrightBrush}" IsVisible="{Binding IsCapturing}"/>
+        <TextBlock Grid.Column="1" Text="{Binding Status}" Classes="mono" FontSize="12.5" Margin="12,0"
+                   VerticalAlignment="Center" TextWrapping="Wrap"/>
+        <Button Grid.Column="2" Classes="ghost" Content="Cancel" Command="{Binding CancelCommand}"
+                IsVisible="{Binding IsCapturing}"/>
+      </Grid>
+    </Border>
+
+    <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="16" RowSpacing="16">
+
+      <!-- Inventory -->
+      <Border Classes="card" Grid.Row="0" Grid.Column="0">
+        <StackPanel Spacing="6">
+          <TextBlock Classes="cardTitle" Text="Inventory anchor"/>
+          <TextBlock Classes="cardDesc" Text="The top-left inventory slot. A 4×7 grid is generated from here."/>
+          <Grid ColumnDefinitions="*,Auto" Margin="0,10,0,0">
+            <TextBlock Text="{Binding InventoryAnchorText}" Classes="mono" VerticalAlignment="Center"/>
+            <Button Grid.Column="1" Classes="primary" Content="Capture" Command="{Binding CaptureInventoryCommand}"/>
+          </Grid>
+          <Grid ColumnDefinitions="*,Auto" Margin="0,12,0,0">
+            <TextBlock Text="Horizontal spacing" VerticalAlignment="Center"/>
+            <TextBlock Grid.Column="1" Classes="mono muted" Text="{Binding InventorySpacingX, StringFormat={}{0:0} px}"/>
+          </Grid>
+          <Slider Minimum="20" Maximum="80" Value="{Binding InventorySpacingX, Mode=TwoWay}"/>
+          <Grid ColumnDefinitions="*,Auto">
+            <TextBlock Text="Vertical spacing" VerticalAlignment="Center"/>
+            <TextBlock Grid.Column="1" Classes="mono muted" Text="{Binding InventorySpacingY, StringFormat={}{0:0} px}"/>
+          </Grid>
+          <Slider Minimum="20" Maximum="80" Value="{Binding InventorySpacingY, Mode=TwoWay}"/>
+        </StackPanel>
+      </Border>
+
+      <!-- Prayer -->
+      <Border Classes="card" Grid.Row="0" Grid.Column="1">
+        <StackPanel Spacing="6">
+          <TextBlock Classes="cardTitle" Text="Prayer anchor"/>
+          <TextBlock Classes="cardDesc" Text="The top-left prayer. A 5-wide book of 29 prayers is generated from here."/>
+          <Grid ColumnDefinitions="*,Auto" Margin="0,10,0,0">
+            <TextBlock Text="{Binding PrayerAnchorText}" Classes="mono" VerticalAlignment="Center"/>
+            <Button Grid.Column="1" Classes="primary" Content="Capture" Command="{Binding CapturePrayerCommand}"/>
+          </Grid>
+          <Grid ColumnDefinitions="*,Auto" Margin="0,12,0,0">
+            <TextBlock Text="Horizontal spacing" VerticalAlignment="Center"/>
+            <TextBlock Grid.Column="1" Classes="mono muted" Text="{Binding PrayerSpacingX, StringFormat={}{0:0} px}"/>
+          </Grid>
+          <Slider Minimum="20" Maximum="80" Value="{Binding PrayerSpacingX, Mode=TwoWay}"/>
+          <Grid ColumnDefinitions="*,Auto">
+            <TextBlock Text="Vertical spacing" VerticalAlignment="Center"/>
+            <TextBlock Grid.Column="1" Classes="mono muted" Text="{Binding PrayerSpacingY, StringFormat={}{0:0} px}"/>
+          </Grid>
+          <Slider Minimum="20" Maximum="80" Value="{Binding PrayerSpacingY, Mode=TwoWay}"/>
+        </StackPanel>
+      </Border>
+
+      <!-- Spec bar -->
+      <Border Classes="card" Grid.Row="1" Grid.Column="0">
+        <StackPanel Spacing="6">
+          <TextBlock Classes="cardTitle" Text="Special-attack bar"/>
+          <TextBlock Classes="cardDesc" Text="A single point on the special-attack orb."/>
+          <Grid ColumnDefinitions="*,Auto" Margin="0,10,0,0">
+            <TextBlock Text="{Binding SpecAnchorText}" Classes="mono" VerticalAlignment="Center"/>
+            <Button Grid.Column="1" Classes="primary" Content="Capture" Command="{Binding CaptureSpecCommand}"/>
+          </Grid>
+        </StackPanel>
+      </Border>
+
+      <!-- How it works -->
+      <Border Classes="card" Grid.Row="1" Grid.Column="1">
+        <StackPanel Spacing="8">
+          <TextBlock Classes="cardTitle" Text="How capture works"/>
+          <TextBlock Classes="cardDesc" TextWrapping="Wrap"
+                     Text="Click Capture, move your mouse over the target in the game, and press any key. The exact cursor position is sampled via the global hook — no need to bring this window forward. Coordinates are physical pixels, so they line up with playback."/>
+        </StackPanel>
+      </Border>
+
+    </Grid>
+  </StackPanel>
+</UserControl>

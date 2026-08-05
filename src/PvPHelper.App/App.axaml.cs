@@ -43,6 +43,7 @@ public partial class App : Application
         services.AddSingleton<SpecViewModel>();
         services.AddSingleton<HotkeysViewModel>();
         services.AddSingleton<ProfilesViewModel>();
+        services.AddSingleton<CalibrationViewModel>();
         services.AddSingleton<SettingsViewModel>();
         services.AddSingleton<MainWindowViewModel>();
 

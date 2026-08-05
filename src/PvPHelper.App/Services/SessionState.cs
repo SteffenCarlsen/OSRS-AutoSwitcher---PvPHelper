@@ -25,6 +25,10 @@ public partial class SessionState : ObservableObject
     [ObservableProperty]
     private string _armLabel = "Disarmed";
 
+    /// <summary>While true, hotkeys are consumed by calibration capture, not the engine.</summary>
+    [ObservableProperty]
+    private bool _isCalibrating;
+
     private readonly ProfileStore _store;
 
     [ObservableProperty]

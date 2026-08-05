@@ -39,6 +39,9 @@ public sealed class ArmController
 
     private void OnHotkey(HotkeyEvent ev)
     {
+        // While calibrating, the CalibrationViewModel consumes the keypress to sample the cursor.
+        if (_session.IsCalibrating) return;
+
         var profile = _session.Profile;
 
         if (ev.Token == profile.ArmHotkey)

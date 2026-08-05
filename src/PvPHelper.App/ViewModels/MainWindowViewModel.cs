@@ -22,6 +22,7 @@ public partial class MainWindowViewModel : ObservableObject
         SpecViewModel spec,
         HotkeysViewModel hotkeys,
         ProfilesViewModel profiles,
+        CalibrationViewModel calibration,
         SettingsViewModel settings)
     {
         Session = session;
@@ -31,6 +32,7 @@ public partial class MainWindowViewModel : ObservableObject
         CombatNav.Add(new NavItem("Prayers", "✦", "Combat", prayers, Select));
         CombatNav.Add(new NavItem("Spec Helper", "☄", "Combat", spec, Select));
 
+        ConfigNav.Add(new NavItem("Calibration", "◎", "Config", calibration, Select));
         ConfigNav.Add(new NavItem("Hotkeys", "⌨", "Config", hotkeys, Select));
         ConfigNav.Add(new NavItem("Profiles", "⛃", "Config", profiles, Select));
         ConfigNav.Add(new NavItem("Settings", "⚙", "Config", settings, Select));
