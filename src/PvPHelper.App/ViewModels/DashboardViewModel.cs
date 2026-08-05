@@ -1,17 +1,34 @@
+using System;
 using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using PvPHelper.App.Services;
 using PvPHelper.Core.Models;
 
 namespace PvPHelper.App.ViewModels;
 
-/// <summary>A single row in the Dashboard "Bindings" list.</summary>
-public sealed class BindingRowVm
+/// <summary>A single row in the Dashboard "Bindings" list; the toggle writes back to the model.</summary>
+public sealed partial class BindingRowVm : ObservableObject
 {
-    public required string Glyph { get; init; }
-    public required string Name { get; init; }
-    public required string Detail { get; init; }
-    public required string HotkeyText { get; init; }
-    public bool Enabled { get; set; } = true;
+    private readonly Action<bool> _onEnabledChanged;
+
+    public string Glyph { get; }
+    public string Name { get; }
+    public string Detail { get; }
+    public string HotkeyText { get; }
+
+    [ObservableProperty] private bool _enabled;
+
+    public BindingRowVm(string glyph, string name, string detail, string hotkeyText, bool enabled, Action<bool> onEnabledChanged)
+    {
+        Glyph = glyph;
+        Name = name;
+        Detail = detail;
+        HotkeyText = hotkeyText;
+        _enabled = enabled;
+        _onEnabledChanged = onEnabledChanged;
+    }
+
+    partial void OnEnabledChanged(bool value) => _onEnabledChanged(value);
 }
 
 public sealed class DashboardViewModel : PageViewModelBase
@@ -42,34 +59,16 @@ public sealed class DashboardViewModel : PageViewModelBase
         Bindings.Clear();
 
         foreach (var s in p.Switches)
-            Bindings.Add(new BindingRowVm
-            {
-                Glyph = "⚔",
-                Name = s.Name,
-                Detail = $"Auto-switch · {s.SlotOrder.Count} slots",
-                HotkeyText = s.Hotkey.Display,
-                Enabled = s.Enabled
-            });
+            Bindings.Add(new BindingRowVm("⚔", s.Name, $"Auto-switch · {s.SlotOrder.Count} slots",
+                s.Hotkey.Display, s.Enabled, e => { s.Enabled = e; Session.Save(); }));
 
         foreach (var pr in p.Prayers)
-            Bindings.Add(new BindingRowVm
-            {
-                Glyph = "✦",
-                Name = PrayerCatalog.DisplayName(pr.Prayer),
-                Detail = "Prayer",
-                HotkeyText = pr.Hotkey.Display,
-                Enabled = pr.Enabled
-            });
+            Bindings.Add(new BindingRowVm("✦", PrayerCatalog.DisplayName(pr.Prayer), "Prayer",
+                pr.Hotkey.Display, pr.Enabled, e => { pr.Enabled = e; Session.Save(); }));
 
         foreach (var sp in p.Specs)
-            Bindings.Add(new BindingRowVm
-            {
-                Glyph = "☄",
-                Name = sp.Name,
-                Detail = $"Spec · {sp.SpecTimes}× special",
-                HotkeyText = sp.Hotkey.Display,
-                Enabled = sp.Enabled
-            });
+            Bindings.Add(new BindingRowVm("☄", sp.Name, $"Spec · {sp.SpecTimes}× special",
+                sp.Hotkey.Display, sp.Enabled, e => { sp.Enabled = e; Session.Save(); }));
 
         OnPropertyChanged(nameof(BindingsSummary));
         OnPropertyChanged(nameof(CalibrationText));

@@ -91,7 +91,7 @@
                 <Border Grid.Column="2" Classes="keyChip" Margin="0,0,14,0">
                   <TextBlock Text="{Binding HotkeyText}"/>
                 </Border>
-                <ToggleSwitch Grid.Column="3" IsChecked="{Binding Enabled}" OnContent="" OffContent=""/>
+                <ToggleSwitch Grid.Column="3" IsChecked="{Binding Enabled, Mode=TwoWay}" OnContent="" OffContent=""/>
               </Grid>
             </Border>
           </DataTemplate>
