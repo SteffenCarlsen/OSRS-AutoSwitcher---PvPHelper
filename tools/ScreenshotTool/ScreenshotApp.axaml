@@ -1,0 +1,23 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:app="using:PvPHelper.App"
+             x:Class="ScreenshotTool.ScreenshotApp"
+             RequestedThemeVariant="Dark">
+
+    <Application.DataTemplates>
+        <app:ViewLocator/>
+    </Application.DataTemplates>
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="avares://OSRS-PvPHelper/Themes/NebulaColors.axaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+
+    <Application.Styles>
+        <FluentTheme />
+        <StyleInclude Source="avares://OSRS-PvPHelper/Themes/NebulaStyles.axaml"/>
+    </Application.Styles>
+</Application>
