@@ -63,7 +63,7 @@ namespace OSRSAutoSwitcher
         {
             if (!StartupChecks()) return;
             _stop = false;
-            var inputManager = new InputManager(true);
+            var inputManager = new InputManager(false);
             inputManager.OnKeyboardEvent += InputManagerOnOnKeyboardEvent;
             DateTime startTime = DateTime.Now;
             while (!_stop)

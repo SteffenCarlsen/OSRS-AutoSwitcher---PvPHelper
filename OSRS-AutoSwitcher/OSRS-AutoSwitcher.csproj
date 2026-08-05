@@ -10,6 +10,18 @@
     <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
+  <!-- Assembly identity/version (previously carried by the now-removed Properties/AssemblyInfo.cs) -->
+  <PropertyGroup>
+    <Version>1.3.0</Version>
+    <AssemblyVersion>1.3.0</AssemblyVersion>
+    <FileVersion>1.3.0</FileVersion>
+    <Product>OSRS-PvPHelper</Product>
+    <AssemblyTitle>OSRS-PvPHelper</AssemblyTitle>
+    <Description>Pretty nice helper software</Description>
+    <Company>None A/S</Company>
+    <Copyright>Copyright © 2019</Copyright>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="LowLevelInput.Net" Version="1.36.6" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
