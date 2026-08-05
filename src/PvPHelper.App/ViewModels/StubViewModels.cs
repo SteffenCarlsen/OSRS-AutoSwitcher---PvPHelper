@@ -3,24 +3,6 @@ namespace PvPHelper.App.ViewModels;
 // Lightweight placeholders for sections whose full UI arrives in later phases.
 // Each still routes through the sidebar + ViewLocator and renders the themed PlaceholderView.
 
-public sealed class PrayersViewModel : PageViewModelBase
-{
-    public override string Title => "Prayers";
-    public override string Subtitle => "Bind a prayer to a key";
-    public override string Glyph => "✦";
-    public override string Blurb =>
-        "The full 29-prayer book laid out as in-game, with search and one-click binding.";
-}
-
-public sealed class SpecViewModel : PageViewModelBase
-{
-    public override string Title => "Spec Helper";
-    public override string Subtitle => "Equip a spec weapon, activate, click the target";
-    public override string Glyph => "☄";
-    public override string Blurb =>
-        "Choose the spec weapon slots, wait-for-bar behaviour, and how many times to special-attack.";
-}
-
 public sealed class HotkeysViewModel : PageViewModelBase
 {
     public override string Title => "Hotkeys";

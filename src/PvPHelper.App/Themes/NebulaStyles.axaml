@@ -295,4 +295,39 @@
     <Setter Property="VerticalAlignment" Value="Center"/>
   </Style>
 
+  <!-- Prayer book cells -->
+  <Style Selector="Button.pray">
+    <Setter Property="Background" Value="{StaticResource SurfaceBrush}"/>
+    <Setter Property="BorderBrush" Value="{StaticResource HairlineBrush}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="CornerRadius" Value="9"/>
+    <Setter Property="Padding" Value="6"/>
+    <Setter Property="Height" Value="60"/>
+    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+  </Style>
+  <Style Selector="Button.pray:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{StaticResource SurfaceRaisedBrush}"/>
+  </Style>
+  <Style Selector="Button.pray.selected">
+    <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+  </Style>
+  <Style Selector="Button.pray.selected /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{StaticResource AccentWashBrush}"/>
+  </Style>
+
+  <!-- Stepper -->
+  <Style Selector="Button.stepper">
+    <Setter Property="Background" Value="{StaticResource BgVoidBrush}"/>
+    <Setter Property="BorderBrush" Value="{StaticResource HairlineBrush}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="Width" Value="34"/>
+    <Setter Property="Height" Value="34"/>
+    <Setter Property="Padding" Value="0"/>
+    <Setter Property="CornerRadius" Value="8"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+  </Style>
+
 </Styles>
