@@ -77,9 +77,12 @@ internal static class Program
             Capture(Slug(nav.Label));
         }
 
-        // Armed dashboard (glow state)
+        // Armed dashboard (glow state) — seed a few activity lines for a lively shot.
         main.CombatNav[0].SelectCommand.Execute(null);
         session.IsArmed = true;
+        session.Log("⚔ Full Rune");
+        session.Log("✦ Protect from Melee");
+        session.Log("☄ AGS Spec ×2");
         Dispatcher.UIThread.RunJobs();
         Capture("dashboard-armed");
         session.IsArmed = false;

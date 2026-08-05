@@ -53,10 +53,11 @@ public sealed class PostMessageInputSender : IInputSender
         {
             action(ProcessInput.FromWindow(hwnd), hwnd);
         }
-        catch
+        catch (Exception ex)
         {
-            // Window changed/closed or the UI thread has no focus for keyboard posting;
-            // ignore so one failed post can't tear down an action sequence.
+            // Window changed/closed or the UI thread has no focus for keyboard posting; don't let
+            // one failed post tear down an action sequence, but leave a trace for diagnosis.
+            System.Diagnostics.Debug.WriteLine($"[PostMessageInputSender] post to 0x{hwnd:X} failed: {ex.Message}");
         }
     }
 }

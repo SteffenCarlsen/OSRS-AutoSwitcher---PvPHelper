@@ -14,8 +14,9 @@ public enum HotkeySource
 }
 
 /// <summary>
-/// A single bindable hotkey. For <see cref="HotkeySource.Keyboard"/> the code is a Win32
-/// virtual-key code; for <see cref="HotkeySource.Mouse"/> it is a button number (1=L,2=R,3=M,4,5).
+/// A single bindable hotkey. For both sources the code is a Win32 virtual-key code:
+/// keyboard keys use their VK; mouse buttons use the mouse VKs — 1=Left, 2=Right, 4=Middle,
+/// 5=XButton1 ("Mouse 4"), 6=XButton2 ("Mouse 5").
 /// </summary>
 public readonly record struct HotkeyToken(HotkeySource Source, int Code)
 {

@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:PvPHelper.App.ViewModels"
+             xmlns:sys="using:System"
              x:Class="PvPHelper.App.Views.DashboardView"
              x:DataType="vm:DashboardViewModel">
 
@@ -101,17 +102,14 @@
 
     <!-- Activity -->
     <TextBlock Classes="eyebrow" Text="ACTIVITY" Margin="2,2,0,0"/>
-    <Border Classes="card">
-      <StackPanel Spacing="7">
-        <StackPanel Orientation="Horizontal" Spacing="11">
-          <TextBlock Classes="mono muted" Text="00:14:02"/>
-          <TextBlock Classes="mono" Foreground="{StaticResource AccentBrightBrush}" Text="△ Armed"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" Spacing="11">
-          <TextBlock Classes="mono muted" Text="00:14:05"/>
-          <TextBlock Classes="mono secondary" Text="⚔ Switched · Full Rune   ·   ☄ Spec ×2 on target"/>
-        </StackPanel>
-      </StackPanel>
+    <Border Classes="card" MinHeight="60">
+      <ItemsControl ItemsSource="{Binding Session.Activity}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="sys:String">
+            <TextBlock Classes="mono secondary" Text="{Binding}" FontSize="12.5" Margin="0,2"/>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
     </Border>
 
   </StackPanel>

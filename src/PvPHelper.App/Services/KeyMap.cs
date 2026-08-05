@@ -10,7 +10,7 @@ public static class KeyMap
         >= Key.A and <= Key.Z => 0x41 + (key - Key.A),
         >= Key.D0 and <= Key.D9 => 0x30 + (key - Key.D0),
         >= Key.NumPad0 and <= Key.NumPad9 => 0x60 + (key - Key.NumPad0),
-        >= Key.F1 and <= Key.F12 => 0x70 + (key - Key.F1),
+        >= Key.F1 and <= Key.F24 => 0x70 + (key - Key.F1),
         Key.Space => 0x20,
         Key.Tab => 0x09,
         Key.Enter => 0x0D,

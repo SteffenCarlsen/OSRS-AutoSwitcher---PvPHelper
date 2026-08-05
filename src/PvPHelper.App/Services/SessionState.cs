@@ -1,4 +1,5 @@
 using System;
+using System.Collections.ObjectModel;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -45,6 +46,18 @@ public partial class SessionState : ObservableObject
 
         _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
         _timer.Tick += (_, _) => RunningTime = (DateTime.Now - _armedAt).ToString(@"hh\:mm\:ss");
+
+        Activity.Add("Ready — arm to begin.");
+    }
+
+    /// <summary>Most-recent-first activity log shown on the Dashboard. Mutate on the UI thread.</summary>
+    public ObservableCollection<string> Activity { get; } = new();
+
+    /// <summary>Prepend a timestamped line to the activity feed (capped).</summary>
+    public void Log(string message)
+    {
+        Activity.Insert(0, $"{DateTime.Now:HH:mm:ss}  {message}");
+        while (Activity.Count > 60) Activity.RemoveAt(Activity.Count - 1);
     }
 
     public string StoreDirectory => _store.Directory;
@@ -83,6 +96,7 @@ public partial class SessionState : ObservableObject
     partial void OnIsArmedChanged(bool value)
     {
         ArmLabel = value ? "Armed" : "Disarmed";
+        Log(value ? "△ Armed" : "⛔ Disarmed");
         if (value)
         {
             _armedAt = DateTime.Now;

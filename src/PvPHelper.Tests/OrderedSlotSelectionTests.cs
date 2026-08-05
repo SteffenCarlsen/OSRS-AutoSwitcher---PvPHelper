@@ -31,4 +31,13 @@ public class OrderedSlotSelectionTests
         Assert.Equal(0, s.OrdinalOf(2));
         Assert.Equal(2, s.OrdinalOf(9)); // 9 renumbered from 3rd to 2nd
     }
+
+    [Fact]
+    public void Set_Deduplicates_Preserving_Order()
+    {
+        var s = new OrderedSlotSelection();
+        s.Set(new[] { 5, 2, 5, 9, 2 });
+
+        Assert.Equal(new[] { 5, 2, 9 }, s.Order);
+    }
 }

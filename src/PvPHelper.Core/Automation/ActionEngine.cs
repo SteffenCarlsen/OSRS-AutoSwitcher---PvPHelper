@@ -5,11 +5,12 @@ using PvPHelper.Core.Models;
 namespace PvPHelper.Core.Automation;
 
 /// <summary>
-/// Executes bound actions for a released hotkey, preserving the legacy console ordering
+/// Executes bound actions for a released hotkey, preserving the legacy ordering
 /// (prayer → switch → spec). All timings come from the profile's <see cref="AntiBanSettings"/>
 /// (and per-spec <see cref="SpecBinding.SpecBarDelayMs"/>) rather than hardcoded constants.
 /// Side effects go through <see cref="IInputSender"/> and delays through an injected sleep,
-/// so ordering and timing are unit-testable.
+/// so ordering and timing are unit-testable. Returns a short description of what ran, for the
+/// activity feed.
 /// </summary>
 public sealed class ActionEngine
 {
@@ -27,15 +28,18 @@ public sealed class ActionEngine
     }
 
     /// <summary>Resolve every binding that matches the released key and run them in order.</summary>
-    public void Handle(Profile profile, HotkeyToken key)
+    public IReadOnlyList<string> Handle(Profile profile, HotkeyToken key)
     {
-        if (!key.IsBound) return;
-        var swappedPrayers = HandlePrayers(profile, key);
-        var swappedItems = HandleSwitches(profile, key, swappedPrayers);
-        HandleSpecs(profile, key, swappedItems, swappedPrayers);
+        var log = new List<string>();
+        if (!key.IsBound) return log;
+
+        var swappedPrayers = HandlePrayers(profile, key, log);
+        var swappedItems = HandleSwitches(profile, key, swappedPrayers, log);
+        HandleSpecs(profile, key, swappedItems, swappedPrayers, log);
+        return log;
     }
 
-    private bool HandlePrayers(Profile p, HotkeyToken key)
+    private bool HandlePrayers(Profile p, HotkeyToken key, List<string> log)
     {
         if (!p.Calibration.PrayerReady) return false;
         var ab = p.AntiBan;
@@ -53,12 +57,13 @@ public sealed class ActionEngine
             _sleep(ab.TabDelayMs);
             SmoothMove(point, ab, click: true);
             if (ab.ReturnToOldPos) SmoothMove(old, ab, click: false);
+            log.Add($"✦ {PrayerCatalog.DisplayName(pr.Prayer)}");
         }
 
         return swapped;
     }
 
-    private bool HandleSwitches(Profile p, HotkeyToken key, bool swappedPrayers)
+    private bool HandleSwitches(Profile p, HotkeyToken key, bool swappedPrayers, List<string> log)
     {
         if (!p.Calibration.InventoryReady) return false;
         var ab = p.AntiBan;
@@ -84,12 +89,13 @@ public sealed class ActionEngine
 
             var ret = sw.ReturnToOldPosOverride ?? ab.ReturnToOldPos;
             if (ret) SmoothMove(old, ab, click: false);
+            log.Add($"⚔ {(string.IsNullOrWhiteSpace(sw.Name) ? "Switch" : sw.Name)}");
         }
 
         return swapped;
     }
 
-    private void HandleSpecs(Profile p, HotkeyToken key, bool swappedItems, bool swappedPrayers)
+    private void HandleSpecs(Profile p, HotkeyToken key, bool swappedItems, bool swappedPrayers, List<string> log)
     {
         if (!p.Calibration.InventoryReady || !p.Calibration.SpecReady) return;
         var ab = p.AntiBan;
@@ -122,6 +128,7 @@ public sealed class ActionEngine
 
             SmoothMove(old, ab, click: true);
             if (ab.ReturnToOldPos) SmoothMove(old, ab, click: false);
+            log.Add($"☄ {(string.IsNullOrWhiteSpace(sp.Name) ? "Spec" : sp.Name)} ×{sp.SpecTimes}");
         }
     }
 
@@ -135,14 +142,19 @@ public sealed class ActionEngine
     {
         var end = Humanizer.Jitter(target, ab.JitterRadius, _rng);
         var start = _input.GetCursor();
-        foreach (var pt in Humanizer.Path(start, end, Math.Max(1, ab.Speed)))
+        foreach (var pt in Humanizer.Path(start, end, Math.Max(1, ab.Speed), ab.CurvedPaths, _rng))
         {
             _input.SetCursor(pt);
             _sleep(ab.StepDelayMs);
         }
 
         _input.SetCursor(end);
-        _sleep(ab.PreClickDelayMs);
-        if (click) _input.LeftClick(end);
+
+        // Only settle + click when we're actually clicking; return moves shouldn't add click delay.
+        if (click)
+        {
+            _sleep(ab.PreClickDelayMs);
+            _input.LeftClick(end);
+        }
     }
 }

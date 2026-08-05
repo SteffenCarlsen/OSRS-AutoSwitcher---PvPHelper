@@ -30,7 +30,9 @@ public sealed class OrderedSlotSelection
     public void Set(IEnumerable<int> slots)
     {
         _order.Clear();
-        _order.AddRange(slots);
+        foreach (var slot in slots)
+            if (!_order.Contains(slot))
+                _order.Add(slot); // de-duplicate while preserving order (guards hand-edited profiles)
     }
 
     public void Clear() => _order.Clear();
