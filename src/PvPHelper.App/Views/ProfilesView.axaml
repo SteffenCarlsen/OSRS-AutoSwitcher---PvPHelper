@@ -44,7 +44,7 @@
     </ItemsControl>
 
     <TextBlock Classes="muted" FontSize="12"
-               Text="Profiles are JSON files in %AppData%\OSRS-PvPHelper\profiles. Use “Open folder” to import or export by copying files. Full file-dialog import and legacy console-config migration are coming."/>
+               Text="Profiles are JSON files in %AppData%\OSRS-PvPHelper\profiles. Use “Open folder” to import or export by copying files. File-dialog import/export is coming."/>
 
   </StackPanel>
 </UserControl>

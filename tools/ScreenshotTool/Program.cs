@@ -46,7 +46,7 @@ internal static class Program
             new CalibrationViewModel(session, hook, cursor),
             new SettingsViewModel(session, locator));
 
-        var window = new MainWindow { DataContext = main, Width = 1240, Height = 700 };
+        var window = new MainWindow { DataContext = main, Width = 1360, Height = 760 };
         window.Show();
         Dispatcher.UIThread.RunJobs();
 

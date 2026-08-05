@@ -4,8 +4,7 @@ A modern **.NET 10 + Avalonia** desktop app for OldSchool RuneScape that automat
 switching, prayer switching, and special attacks on global hotkeys. Windows-only, dark-mode-only,
 with a deep-space **"Nebula"** theme.
 
-> This is a full rewrite of the old console AutoSwitcher into a proper GUI. I do not support or
-> endorse breaking the RuneScape rules — if you get banned, that's on you.
+> I do not support or endorse breaking the RuneScape rules — if you get banned, that's on you.
 
 ![Dashboard](docs/screenshots/dashboard-armed.png)
 

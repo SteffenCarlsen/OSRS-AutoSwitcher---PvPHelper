@@ -17,7 +17,7 @@
       <Border Classes="card" Grid.Row="0" Grid.Column="0">
         <StackPanel Spacing="4">
           <TextBlock Classes="cardTitle" Text="Anti-ban / humanisation"/>
-          <TextBlock Classes="cardDesc" Text="Randomised movement mirrors the console engine — tune the feel."/>
+          <TextBlock Classes="cardDesc" Text="Randomised movement for more human-like input — tune the feel."/>
 
           <Grid ColumnDefinitions="*,Auto" Margin="0,14,0,0">
             <TextBlock Text="Mouse speed" VerticalAlignment="Center"/>
@@ -94,7 +94,7 @@
       <Border Classes="card" Grid.Row="1" Grid.Column="1">
         <StackPanel Spacing="4">
           <TextBlock Classes="cardTitle" Text="Timing (advanced)"/>
-          <TextBlock Classes="cardDesc" Text="Fine-tune every engine delay (ms). Defaults match the console."/>
+          <TextBlock Classes="cardDesc" Text="Fine-tune every engine delay (ms)."/>
           <Grid ColumnDefinitions="Auto,*,Auto,*" RowDefinitions="Auto,Auto,Auto" Margin="0,12,0,0" RowSpacing="10">
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Move step" VerticalAlignment="Center"/>
             <NumericUpDown Grid.Row="0" Grid.Column="1" Value="{Binding StepDelay, Mode=TwoWay}" Minimum="0" Maximum="100" Increment="1" Width="122" Margin="8,0,0,0" HorizontalAlignment="Left"/>
