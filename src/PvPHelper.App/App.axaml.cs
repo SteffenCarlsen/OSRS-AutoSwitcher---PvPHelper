@@ -22,8 +22,17 @@ public partial class App : Application
         services.AddSingleton<ProfileStore>();
         services.AddSingleton<SessionState>();
 
-        // Automation engine
-        services.AddSingleton<IInputSender, Win32InputSender>();
+        // Automation engine — foreground (SendInput) and background (PostMessage) senders,
+        // dispatched by the active profile's input mode.
+        services.AddSingleton<Win32InputSender>();
+        services.AddSingleton<GameWindowLocator>();
+        services.AddSingleton<IGameWindowProvider>(sp => sp.GetRequiredService<GameWindowLocator>());
+        services.AddSingleton<PostMessageInputSender>();
+        services.AddSingleton<IInputModeProvider, AppInputModeProvider>();
+        services.AddSingleton<IInputSender>(sp => new InputRouter(
+            sp.GetRequiredService<IInputModeProvider>(),
+            sp.GetRequiredService<Win32InputSender>(),
+            sp.GetRequiredService<PostMessageInputSender>()));
         services.AddSingleton<IHotkeyHook, LowLevelHotkeyHook>();
         services.AddSingleton<ActionEngine>();
         services.AddSingleton<ArmController>();
@@ -45,6 +54,10 @@ public partial class App : Application
             {
                 DataContext = provider.GetRequiredService<MainWindowViewModel>()
             };
+
+            // Point the background-input locator at the profile's configured window (if any).
+            var session = provider.GetRequiredService<SessionState>();
+            provider.GetRequiredService<GameWindowLocator>().UseTitle(session.Profile.TargetWindowTitle);
 
             // Global hook runs for the app's lifetime so the arm/panic keys always work.
             var arm = provider.GetRequiredService<ArmController>();
