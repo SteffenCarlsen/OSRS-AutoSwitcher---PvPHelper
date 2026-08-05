@@ -90,9 +90,20 @@
                 <Grid ColumnDefinitions="*,Auto">
                   <StackPanel>
                     <TextBlock Text="Wait for spec bar"/>
-                    <TextBlock Classes="cardDesc" Text="Short delay for the bar to appear (450 ms)"/>
+                    <TextBlock Classes="cardDesc" Text="Pause for the spec bar to appear before clicking"/>
                   </StackPanel>
                   <ToggleSwitch Grid.Column="1" OnContent="" OffContent="" IsChecked="{Binding Selected.WaitForSpecBar, Mode=TwoWay}"/>
+                </Grid>
+              </Border>
+
+              <Border Classes="settingRow" IsEnabled="{Binding Selected.WaitForSpecBar}">
+                <Grid ColumnDefinitions="*,Auto">
+                  <StackPanel>
+                    <TextBlock Text="Spec bar delay"/>
+                    <TextBlock Classes="cardDesc" Text="Milliseconds to wait (default 450)"/>
+                  </StackPanel>
+                  <NumericUpDown Grid.Column="1" Value="{Binding Selected.SpecBarDelay, Mode=TwoWay}"
+                                 Minimum="0" Maximum="2000" Increment="25" Width="128" VerticalAlignment="Center"/>
                 </Grid>
               </Border>
 

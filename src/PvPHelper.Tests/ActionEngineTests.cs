@@ -105,4 +105,27 @@ public class ActionEngineTests
 
         Assert.Empty(fake.Log);
     }
+
+    [Fact]
+    public void Configured_Delays_Are_Used()
+    {
+        var p = BaseProfile();
+        p.AntiBan.SwitchClickDelayMs = 77;
+
+        var switchSleeps = new List<int>();
+        var q = new HotkeyToken(HotkeySource.Keyboard, 0x51);
+        p.Switches.Add(new SwitchBinding { Name = "s", Hotkey = q, SlotOrder = new() { 0 } });
+        new ActionEngine(new FakeInput(), sleep: switchSleeps.Add, rng: new Random(1)).Handle(p, q);
+        Assert.Contains(77, switchSleeps); // per-click switch delay
+
+        var specSleeps = new List<int>();
+        var r = new HotkeyToken(HotkeySource.Keyboard, 0x52);
+        p.Specs.Add(new SpecBinding
+        {
+            Name = "sp", Hotkey = r, WeaponSlots = new() { 0 },
+            WaitForSpecBar = true, SpecTimes = 1, SpecBarDelayMs = 321
+        });
+        new ActionEngine(new FakeInput(), sleep: specSleeps.Add, rng: new Random(1)).Handle(p, r);
+        Assert.Contains(321, specSleeps); // per-spec bar delay
+    }
 }

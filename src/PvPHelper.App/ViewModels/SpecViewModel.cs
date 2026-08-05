@@ -92,6 +92,22 @@ public sealed partial class SpecItemVm : ObservableObject
     public string HotkeyText => Hotkey.Display;
     public string Summary => $"{_selection.Count} slot(s) · {SpecTimes}× spec";
 
+    /// <summary>Editable spec-bar wait (ms). Decimal for the NumericUpDown control.</summary>
+    public decimal SpecBarDelay
+    {
+        get => Model.SpecBarDelayMs;
+        set
+        {
+            var i = (int)value;
+            if (Model.SpecBarDelayMs != i)
+            {
+                Model.SpecBarDelayMs = i;
+                OnPropertyChanged();
+                _persist();
+            }
+        }
+    }
+
     partial void OnNameChanged(string value) { Model.Name = value; OnPropertyChanged(nameof(DisplayName)); _persist(); }
     partial void OnHotkeyChanged(HotkeyToken value) { Model.Hotkey = value; OnPropertyChanged(nameof(HotkeyText)); _persist(); }
     partial void OnWaitForSpecBarChanged(bool value) { Model.WaitForSpecBar = value; _persist(); }

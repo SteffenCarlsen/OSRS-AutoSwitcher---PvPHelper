@@ -6,11 +6,15 @@ namespace PvPHelper.Core.Automation;
 
 /// <summary>
 /// Executes bound actions for a released hotkey, preserving the legacy console ordering
-/// (prayer → switch → spec) and timing. Side effects go through <see cref="IInputSender"/>
-/// and delays through an injected sleep, so the ordering is unit-testable.
+/// (prayer → switch → spec). All timings come from the profile's <see cref="AntiBanSettings"/>
+/// (and per-spec <see cref="SpecBinding.SpecBarDelayMs"/>) rather than hardcoded constants.
+/// Side effects go through <see cref="IInputSender"/> and delays through an injected sleep,
+/// so ordering and timing are unit-testable.
 /// </summary>
 public sealed class ActionEngine
 {
+    private const int NoWaitSpecDelayMs = 100;
+
     private readonly IInputSender _input;
     private readonly Action<int> _sleep;
     private readonly Random _rng;
@@ -34,6 +38,7 @@ public sealed class ActionEngine
     private bool HandlePrayers(Profile p, HotkeyToken key)
     {
         if (!p.Calibration.PrayerReady) return false;
+        var ab = p.AntiBan;
         var book = GridGenerator.PrayerBook(p.Calibration.PrayerAnchor!.Value, p.Calibration.PrayerSpacingX, p.Calibration.PrayerSpacingY);
 
         var swapped = false;
@@ -45,9 +50,9 @@ public sealed class ActionEngine
             swapped = true;
             var old = _input.GetCursor();
             PressTab(p.Tabs.Prayer);
-            _sleep(10);
-            SmoothMove(point, p.AntiBan, click: true);
-            if (p.AntiBan.ReturnToOldPos) SmoothMove(old, p.AntiBan, click: false);
+            _sleep(ab.TabDelayMs);
+            SmoothMove(point, ab, click: true);
+            if (ab.ReturnToOldPos) SmoothMove(old, ab, click: false);
         }
 
         return swapped;
@@ -56,6 +61,7 @@ public sealed class ActionEngine
     private bool HandleSwitches(Profile p, HotkeyToken key, bool swappedPrayers)
     {
         if (!p.Calibration.InventoryReady) return false;
+        var ab = p.AntiBan;
         var inv = GridGenerator.Inventory(p.Calibration.InventoryAnchor!.Value, p.Calibration.InventorySpacingX, p.Calibration.InventorySpacingY);
 
         var swapped = false;
@@ -63,21 +69,21 @@ public sealed class ActionEngine
         {
             if (!sw.Enabled || sw.Hotkey != key) continue;
             swapped = true;
-            if (swappedPrayers) _sleep(50);
+            if (swappedPrayers) _sleep(ab.ActionGapMs);
 
             var old = _input.GetCursor();
             foreach (var slot in sw.SlotOrder)
             {
                 if (slot < 0 || slot >= inv.Count) continue;
                 PressTab(p.Tabs.Inventory);
-                _sleep(10);
+                _sleep(ab.TabDelayMs);
                 _input.SetCursor(inv[slot]);
                 _input.LeftClick(inv[slot]);
-                _sleep(50);
+                _sleep(ab.SwitchClickDelayMs);
             }
 
-            var ret = sw.ReturnToOldPosOverride ?? p.AntiBan.ReturnToOldPos;
-            if (ret) SmoothMove(old, p.AntiBan, click: false);
+            var ret = sw.ReturnToOldPosOverride ?? ab.ReturnToOldPos;
+            if (ret) SmoothMove(old, ab, click: false);
         }
 
         return swapped;
@@ -86,35 +92,36 @@ public sealed class ActionEngine
     private void HandleSpecs(Profile p, HotkeyToken key, bool swappedItems, bool swappedPrayers)
     {
         if (!p.Calibration.InventoryReady || !p.Calibration.SpecReady) return;
+        var ab = p.AntiBan;
         var inv = GridGenerator.Inventory(p.Calibration.InventoryAnchor!.Value, p.Calibration.InventorySpacingX, p.Calibration.InventorySpacingY);
 
         foreach (var sp in p.Specs)
         {
             if (!sp.Enabled || sp.Hotkey != key) continue;
-            if (swappedItems || swappedPrayers) _sleep(50);
+            if (swappedItems || swappedPrayers) _sleep(ab.ActionGapMs);
 
             var old = _input.GetCursor();
             PressTab(p.Tabs.Inventory);
             foreach (var slot in sp.WeaponSlots)
             {
                 if (slot < 0 || slot >= inv.Count) continue;
-                _sleep(10);
-                SmoothMove(inv[slot], p.AntiBan, click: true);
-                _sleep(10);
+                _sleep(ab.TabDelayMs);
+                SmoothMove(inv[slot], ab, click: true);
+                _sleep(ab.TabDelayMs);
             }
 
             PressTab(p.Tabs.Attack);
-            _sleep(sp.WaitForSpecBar ? 450 : 100);
-            SmoothMove(old, p.AntiBan, click: true);
+            _sleep(sp.WaitForSpecBar ? sp.SpecBarDelayMs : NoWaitSpecDelayMs);
+            SmoothMove(old, ab, click: true);
 
             for (var i = 0; i < sp.SpecTimes; i++)
             {
-                SmoothMove(p.Calibration.SpecBarPoint!.Value, p.AntiBan, click: true);
-                _sleep(100);
+                SmoothMove(p.Calibration.SpecBarPoint!.Value, ab, click: true);
+                _sleep(ab.SpecClickIntervalMs);
             }
 
-            SmoothMove(old, p.AntiBan, click: true);
-            if (p.AntiBan.ReturnToOldPos) SmoothMove(old, p.AntiBan, click: false);
+            SmoothMove(old, ab, click: true);
+            if (ab.ReturnToOldPos) SmoothMove(old, ab, click: false);
         }
     }
 

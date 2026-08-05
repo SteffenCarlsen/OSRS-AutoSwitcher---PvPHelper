@@ -37,6 +37,18 @@ public sealed class AntiBanSettings
     /// <summary>Settle delay before a click (ms).</summary>
     public int PreClickDelayMs { get; set; } = 50;
 
+    /// <summary>Delay after pressing an in-game tab F-key before clicking (ms).</summary>
+    public int TabDelayMs { get; set; } = 10;
+
+    /// <summary>Gap inserted between combined prayer / switch / spec actions on one key (ms).</summary>
+    public int ActionGapMs { get; set; } = 50;
+
+    /// <summary>Delay after each inventory click during a switch (ms).</summary>
+    public int SwitchClickDelayMs { get; set; } = 50;
+
+    /// <summary>Delay between successive special-attack clicks (ms).</summary>
+    public int SpecClickIntervalMs { get; set; } = 100;
+
     /// <summary>Use a slight curve instead of a straight line.</summary>
     public bool CurvedPaths { get; set; }
 }
@@ -98,6 +110,10 @@ public sealed class SpecBinding : BindingBase
     public List<int> WeaponSlots { get; set; } = new();
     public bool WaitForSpecBar { get; set; }
     public int SpecTimes { get; set; } = 1;
+
+    /// <summary>Delay after activating the special attack before clicking the target, when
+    /// <see cref="WaitForSpecBar"/> is on — time for the spec bar to appear (ms).</summary>
+    public int SpecBarDelayMs { get; set; } = 450;
 }
 
 /// <summary>A complete, named preset. One profile = one saved JSON file.</summary>

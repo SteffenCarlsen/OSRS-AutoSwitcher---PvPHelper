@@ -56,6 +56,14 @@ public sealed partial class SettingsViewModel : PageViewModelBase
         set { var i = (int)value; if (P.AntiBan.JitterRadius != i) { P.AntiBan.JitterRadius = i; OnPropertyChanged(); Save(); } }
     }
 
+    // ---- Timing (advanced, ms) — decimals for the NumericUpDown controls ----
+    public decimal StepDelay { get => P.AntiBan.StepDelayMs; set { P.AntiBan.StepDelayMs = (int)value; OnPropertyChanged(); Save(); } }
+    public decimal PreClickDelay { get => P.AntiBan.PreClickDelayMs; set { P.AntiBan.PreClickDelayMs = (int)value; OnPropertyChanged(); Save(); } }
+    public decimal TabDelay { get => P.AntiBan.TabDelayMs; set { P.AntiBan.TabDelayMs = (int)value; OnPropertyChanged(); Save(); } }
+    public decimal ActionGap { get => P.AntiBan.ActionGapMs; set { P.AntiBan.ActionGapMs = (int)value; OnPropertyChanged(); Save(); } }
+    public decimal SwitchClickDelay { get => P.AntiBan.SwitchClickDelayMs; set { P.AntiBan.SwitchClickDelayMs = (int)value; OnPropertyChanged(); Save(); } }
+    public decimal SpecClickInterval { get => P.AntiBan.SpecClickIntervalMs; set { P.AntiBan.SpecClickIntervalMs = (int)value; OnPropertyChanged(); Save(); } }
+
     // ---- Client mode ----
     public bool IsFixed { get => P.ClientMode == ClientMode.Fixed; set { if (value) SetClientMode(ClientMode.Fixed); } }
     public bool IsResizable { get => P.ClientMode == ClientMode.Resizable; set { if (value) SetClientMode(ClientMode.Resizable); } }
