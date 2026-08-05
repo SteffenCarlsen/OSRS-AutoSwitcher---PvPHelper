@@ -1,0 +1,30 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:PvPHelper.App.ViewModels"
+             x:Class="PvPHelper.App.Views.PlaceholderView"
+             x:DataType="vm:PageViewModelBase">
+
+  <StackPanel Spacing="16">
+    <StackPanel Orientation="Horizontal" Spacing="12">
+      <TextBlock Classes="h1" Text="{Binding Title}" VerticalAlignment="Bottom"/>
+      <TextBlock Classes="sub" Text="{Binding Subtitle}" VerticalAlignment="Bottom" Margin="0,0,0,3"/>
+    </StackPanel>
+
+    <Border Classes="card" Padding="44" MinHeight="360">
+      <StackPanel Spacing="16" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="520">
+        <Border Width="66" Height="66" CornerRadius="18" Background="{StaticResource SurfaceRaisedBrush}"
+                BorderBrush="{StaticResource HairlineBrush}" BorderThickness="1" HorizontalAlignment="Center">
+          <TextBlock Text="{Binding Glyph}" FontSize="30" HorizontalAlignment="Center"
+                     VerticalAlignment="Center" Foreground="{StaticResource AccentBrightBrush}"/>
+        </Border>
+
+        <Border Background="{StaticResource AccentWashBrush}" CornerRadius="999" Padding="12,5" HorizontalAlignment="Center">
+          <TextBlock Text="Coming together on this branch" Foreground="{StaticResource AccentBrightBrush}" FontSize="12"/>
+        </Border>
+
+        <TextBlock Text="{Binding Blurb}" Classes="secondary" HorizontalAlignment="Center"
+                   TextAlignment="Center" MaxWidth="460"/>
+      </StackPanel>
+    </Border>
+  </StackPanel>
+</UserControl>

@@ -1,0 +1,63 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <!-- ===== Nebula palette (dark-only, from the deep-space reference) ===== -->
+  <Color x:Key="VoidColor">#07060E</Color>
+  <Color x:Key="BaseColor">#0C0A18</Color>
+  <Color x:Key="NebulaColor">#150E28</Color>
+  <Color x:Key="SurfaceColor">#17132C</Color>
+  <Color x:Key="SurfaceRaisedColor">#1F1840</Color>
+  <Color x:Key="HairlineColor">#2A2350</Color>
+  <Color x:Key="StrongBorderColor">#3A3168</Color>
+
+  <Color x:Key="AccentColor">#8B5CF6</Color>
+  <Color x:Key="AccentBrightColor">#A78BFA</Color>
+  <Color x:Key="AccentDeepColor">#6D28D9</Color>
+
+  <Color x:Key="StarlightColor">#E9D8AE</Color>
+  <Color x:Key="OkColor">#3ED598</Color>
+  <Color x:Key="WarnColor">#F2C14E</Color>
+  <Color x:Key="DangerColor">#FB6F92</Color>
+
+  <Color x:Key="TextPrimaryColor">#EDEBF7</Color>
+  <Color x:Key="TextSecondaryColor">#B6AFD4</Color>
+  <Color x:Key="TextMutedColor">#7B739E</Color>
+
+  <!-- ===== Brushes ===== -->
+  <SolidColorBrush x:Key="BgVoidBrush" Color="{StaticResource VoidColor}"/>
+  <SolidColorBrush x:Key="BgBaseBrush" Color="{StaticResource BaseColor}"/>
+  <SolidColorBrush x:Key="BgNebulaBrush" Color="{StaticResource NebulaColor}"/>
+  <SolidColorBrush x:Key="SurfaceBrush" Color="{StaticResource SurfaceColor}"/>
+  <SolidColorBrush x:Key="SurfaceRaisedBrush" Color="{StaticResource SurfaceRaisedColor}"/>
+  <SolidColorBrush x:Key="HairlineBrush" Color="{StaticResource HairlineColor}"/>
+  <SolidColorBrush x:Key="StrongBorderBrush" Color="{StaticResource StrongBorderColor}"/>
+
+  <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}"/>
+  <SolidColorBrush x:Key="AccentBrightBrush" Color="{StaticResource AccentBrightColor}"/>
+  <SolidColorBrush x:Key="AccentDeepBrush" Color="{StaticResource AccentDeepColor}"/>
+
+  <SolidColorBrush x:Key="StarlightBrush" Color="{StaticResource StarlightColor}"/>
+  <SolidColorBrush x:Key="OkBrush" Color="{StaticResource OkColor}"/>
+  <SolidColorBrush x:Key="WarnBrush" Color="{StaticResource WarnColor}"/>
+  <SolidColorBrush x:Key="DangerBrush" Color="{StaticResource DangerColor}"/>
+
+  <SolidColorBrush x:Key="TextPrimaryBrush" Color="{StaticResource TextPrimaryColor}"/>
+  <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource TextSecondaryColor}"/>
+  <SolidColorBrush x:Key="TextMutedBrush" Color="{StaticResource TextMutedColor}"/>
+
+  <!-- translucent accents -->
+  <SolidColorBrush x:Key="AccentGlowBrush" Color="#7C3AED" Opacity="0.28"/>
+  <SolidColorBrush x:Key="AccentWashBrush" Color="#7C3AED" Opacity="0.14"/>
+
+  <LinearGradientBrush x:Key="AccentGradient" StartPoint="0%,0%" EndPoint="100%,100%">
+    <GradientStop Offset="0" Color="#6D28D9"/>
+    <GradientStop Offset="0.55" Color="#9D4EDD"/>
+    <GradientStop Offset="1" Color="#C77DFF"/>
+  </LinearGradientBrush>
+
+  <LinearGradientBrush x:Key="ArmHeroGlow" StartPoint="100%,0%" EndPoint="0%,100%">
+    <GradientStop Offset="0" Color="#332F1D57"/>
+    <GradientStop Offset="1" Color="#00000000"/>
+  </LinearGradientBrush>
+
+</ResourceDictionary>

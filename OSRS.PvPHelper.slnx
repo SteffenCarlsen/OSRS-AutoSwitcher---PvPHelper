@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/PvPHelper.App/PvPHelper.App.csproj" />
+    <Project Path="src/PvPHelper.Core/PvPHelper.Core.csproj" />
+    <Project Path="src/PvPHelper.Tests/PvPHelper.Tests.csproj" />
+  </Folder>
+</Solution>
