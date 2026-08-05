@@ -35,14 +35,16 @@ public static class HotkeyNames
     {
         if (!token.IsBound) return "—";
 
+        // Mouse codes are Win32 virtual-key codes (as delivered by the low-level hook):
+        // 1=L, 2=R, 4=Middle, 5=XButton1 (Mouse 4), 6=XButton2 (Mouse 5).
         if (token.Source == HotkeySource.Mouse)
             return token.Code switch
             {
                 1 => "Mouse L",
                 2 => "Mouse R",
-                3 => "Mouse M",
-                4 => "Mouse 4",
-                5 => "Mouse 5",
+                4 => "Mouse M",
+                5 => "Mouse 4",
+                6 => "Mouse 5",
                 _ => $"Mouse {token.Code}"
             };
 

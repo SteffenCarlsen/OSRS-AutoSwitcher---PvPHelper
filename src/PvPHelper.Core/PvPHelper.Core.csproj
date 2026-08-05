@@ -7,4 +7,8 @@
     <RootNamespace>PvPHelper.Core</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="LowLevelInput.Net" Version="1.36.6" />
+  </ItemGroup>
+
 </Project>
