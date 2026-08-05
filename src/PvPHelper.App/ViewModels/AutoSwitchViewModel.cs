@@ -27,7 +27,15 @@ public sealed partial class AutoSwitchViewModel : PageViewModelBase
     public AutoSwitchViewModel(SessionState session)
     {
         _session = session;
-        foreach (var model in session.Profile.Switches)
+        Reload();
+    }
+
+    public override void OnNavigatedTo() => Reload();
+
+    private void Reload()
+    {
+        Switches.Clear();
+        foreach (var model in _session.Profile.Switches)
             Switches.Add(new SwitchItemVm(model, _session.Save));
         Selected = Switches.FirstOrDefault();
     }

@@ -27,11 +27,18 @@ public sealed partial class PrayersViewModel : PageViewModelBase
     public PrayersViewModel(SessionState session)
     {
         _session = session;
-        foreach (var model in session.Profile.Prayers)
-            Bindings.Add(new PrayerBindingVm(model, OnBindingChanged));
         foreach (var prayer in PrayerCatalog.InBookOrder)
             Book.Add(new PrayerCellVm(prayer, PickPrayer));
+        Reload();
+    }
 
+    public override void OnNavigatedTo() => Reload();
+
+    private void Reload()
+    {
+        Bindings.Clear();
+        foreach (var model in _session.Profile.Prayers)
+            Bindings.Add(new PrayerBindingVm(model, OnBindingChanged));
         Selected = Bindings.FirstOrDefault();
         RefreshBook();
     }

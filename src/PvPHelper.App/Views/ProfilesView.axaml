@@ -1,0 +1,50 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:PvPHelper.App.ViewModels"
+             x:Class="PvPHelper.App.Views.ProfilesView"
+             x:DataType="vm:ProfilesViewModel">
+
+  <StackPanel Spacing="16">
+
+    <Grid ColumnDefinitions="*,Auto,Auto">
+      <StackPanel Orientation="Horizontal" Spacing="12">
+        <TextBlock Classes="h1" Text="Profiles" VerticalAlignment="Bottom"/>
+        <TextBlock Classes="sub" Text="Presets you can hot-swap" VerticalAlignment="Bottom" Margin="0,0,0,3"/>
+      </StackPanel>
+      <Button Grid.Column="1" Classes="ghost" Content="Open folder" Command="{Binding OpenFolderCommand}" Margin="0,0,8,0"/>
+      <Button Grid.Column="2" Classes="primary" Content="＋ New profile" Command="{Binding NewProfileCommand}"/>
+    </Grid>
+
+    <ItemsControl ItemsSource="{Binding Profiles}">
+      <ItemsControl.ItemsPanel>
+        <ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate>
+      </ItemsControl.ItemsPanel>
+      <ItemsControl.ItemTemplate>
+        <DataTemplate x:DataType="vm:ProfileItemVm">
+          <Border Classes="tile" Width="248" Margin="0,0,12,12">
+            <StackPanel Spacing="10">
+              <Grid ColumnDefinitions="*,Auto">
+                <TextBlock Text="{Binding Name}" FontSize="16" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                <Border Grid.Column="1" Background="{StaticResource AccentWashBrush}" CornerRadius="999"
+                        Padding="9,3" IsVisible="{Binding IsActive}">
+                  <TextBlock Text="Active" FontSize="11" Foreground="{StaticResource AccentBrightBrush}"/>
+                </Border>
+              </Grid>
+              <StackPanel Orientation="Horizontal" Spacing="8">
+                <Button Classes="ghost" Content="Load" Command="{Binding LoadCommand}" IsVisible="{Binding !IsActive}"
+                        Padding="12,6" FontSize="12"/>
+                <Button Classes="ghost" Content="Duplicate" Command="{Binding DuplicateCommand}" Padding="12,6" FontSize="12"/>
+                <Button Classes="danger" Content="Delete" Command="{Binding DeleteCommand}" IsVisible="{Binding !IsActive}"
+                        Padding="12,6" FontSize="12"/>
+              </StackPanel>
+            </StackPanel>
+          </Border>
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
+
+    <TextBlock Classes="muted" FontSize="12"
+               Text="Profiles are JSON files in %AppData%\OSRS-PvPHelper\profiles. Use “Open folder” to import or export by copying files. Full file-dialog import and legacy console-config migration are coming."/>
+
+  </StackPanel>
+</UserControl>

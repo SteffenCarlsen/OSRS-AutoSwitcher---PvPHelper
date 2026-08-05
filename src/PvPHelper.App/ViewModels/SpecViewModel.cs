@@ -25,7 +25,15 @@ public sealed partial class SpecViewModel : PageViewModelBase
     public SpecViewModel(SessionState session)
     {
         _session = session;
-        foreach (var model in session.Profile.Specs)
+        Reload();
+    }
+
+    public override void OnNavigatedTo() => Reload();
+
+    private void Reload()
+    {
+        Specs.Clear();
+        foreach (var model in _session.Profile.Specs)
             Specs.Add(new SpecItemVm(model, _session.Save));
         Selected = Specs.FirstOrDefault();
     }

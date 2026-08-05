@@ -121,6 +121,9 @@ public sealed partial class SettingsViewModel : PageViewModelBase
     public string PrayerStatus => P.Calibration.PrayerReady ? "Ready" : "Not set";
     public string SpecStatus => P.Calibration.SpecReady ? "Ready" : "Not set";
 
+    // Re-read every setting from the (possibly hot-swapped) active profile.
+    public override void OnNavigatedTo() => OnPropertyChanged(string.Empty);
+
     private void Save()
     {
         _saveDebounce.Stop();
