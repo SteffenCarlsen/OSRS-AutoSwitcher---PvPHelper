@@ -11,4 +11,7 @@ public abstract class PageViewModelBase : ObservableObject
 
     /// <summary>Placeholder copy for sections whose full UI lands in a later phase.</summary>
     public virtual string Blurb => "This section is being built out on this branch.";
+
+    /// <summary>Called each time the page becomes the active content — refresh from the profile here.</summary>
+    public virtual void OnNavigatedTo() { }
 }

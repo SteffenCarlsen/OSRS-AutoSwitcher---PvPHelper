@@ -1,0 +1,47 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:PvPHelper.App.ViewModels"
+             xmlns:ctrl="using:PvPHelper.App.Controls"
+             x:Class="PvPHelper.App.Views.HotkeysView"
+             x:DataType="vm:HotkeysViewModel">
+
+  <UserControl.Resources>
+    <DataTemplate x:Key="HotkeyRow" x:DataType="vm:HotkeyRowVm">
+      <Border Classes="brow" BorderBrush="{StaticResource HairlineBrush}" BorderThickness="0,0,0,1">
+        <Grid ColumnDefinitions="Auto,*,Auto,Auto" VerticalAlignment="Center">
+          <Border Classes="rowIco">
+            <TextBlock Text="{Binding Glyph}" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </Border>
+          <StackPanel Grid.Column="1" Margin="13,0" VerticalAlignment="Center">
+            <TextBlock Text="{Binding Name}" FontSize="13.5" FontWeight="Medium"/>
+            <TextBlock Text="{Binding Kind}" Classes="muted" FontSize="11.5"/>
+          </StackPanel>
+          <TextBlock Grid.Column="2" Text="⚠ conflict" Foreground="{StaticResource WarnBrush}" FontSize="11.5"
+                     VerticalAlignment="Center" Margin="0,0,12,0" IsVisible="{Binding HasConflict}"/>
+          <ctrl:HotkeyCaptureBox Grid.Column="3" Hotkey="{Binding Hotkey, Mode=TwoWay}"/>
+        </Grid>
+      </Border>
+    </DataTemplate>
+  </UserControl.Resources>
+
+  <StackPanel Spacing="16">
+
+    <StackPanel Orientation="Horizontal" Spacing="12">
+      <TextBlock Classes="h1" Text="Hotkeys" VerticalAlignment="Bottom"/>
+      <TextBlock Classes="sub" Text="Every binding in one place · conflicts flagged" VerticalAlignment="Bottom" Margin="0,0,0,3"/>
+    </StackPanel>
+
+    <TextBlock Classes="eyebrow" Text="BINDINGS" Margin="2,0,0,0"/>
+    <Border Classes="card" Padding="0" ClipToBounds="True">
+      <ItemsControl ItemsSource="{Binding Bindings}" ItemTemplate="{StaticResource HotkeyRow}"/>
+    </Border>
+    <TextBlock Text="No bindings yet — add them from the Auto-Switch, Prayers, and Spec pages."
+               Classes="muted" FontSize="12" IsVisible="{Binding !HasBindings}"/>
+
+    <TextBlock Classes="eyebrow" Text="APPLICATION KEYS" Margin="2,6,0,0"/>
+    <Border Classes="card" Padding="0" ClipToBounds="True">
+      <ItemsControl ItemsSource="{Binding AppKeys}" ItemTemplate="{StaticResource HotkeyRow}"/>
+    </Border>
+
+  </StackPanel>
+</UserControl>

@@ -43,5 +43,6 @@ public partial class MainWindowViewModel : ObservableObject
         foreach (var n in CombatNav) n.IsSelected = ReferenceEquals(n, item);
         foreach (var n in ConfigNav) n.IsSelected = ReferenceEquals(n, item);
         CurrentPage = item.Page;
+        item.Page.OnNavigatedTo();
     }
 }

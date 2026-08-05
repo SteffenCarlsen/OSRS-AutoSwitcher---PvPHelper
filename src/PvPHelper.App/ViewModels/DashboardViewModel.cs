@@ -23,14 +23,23 @@ public sealed class DashboardViewModel : PageViewModelBase
 
     public ObservableCollection<BindingRowVm> Bindings { get; } = new();
 
-    public string BindingsSummary { get; }
-    public string CalibrationText { get; }
-    public string ClientModeText { get; }
+    public string BindingsSummary =>
+        $"{Session.Profile.BindingCount}   ·   {Session.Profile.Switches.Count} switch / {Session.Profile.Prayers.Count} prayer / {Session.Profile.Specs.Count} spec";
+    public string CalibrationText => $"{Session.Profile.Calibration.ReadyCount} / 3";
+    public string ClientModeText => $"{Session.Profile.ClientMode} · {Session.Profile.UiScalePercent}%";
 
     public DashboardViewModel(SessionState session)
     {
         Session = session;
-        var p = session.Profile;
+        Rebuild();
+    }
+
+    public override void OnNavigatedTo() => Rebuild();
+
+    private void Rebuild()
+    {
+        var p = Session.Profile;
+        Bindings.Clear();
 
         foreach (var s in p.Switches)
             Bindings.Add(new BindingRowVm
@@ -62,8 +71,8 @@ public sealed class DashboardViewModel : PageViewModelBase
                 Enabled = sp.Enabled
             });
 
-        BindingsSummary = $"{p.BindingCount}   ·   {p.Switches.Count} switch / {p.Prayers.Count} prayer / {p.Specs.Count} spec";
-        CalibrationText = $"{p.Calibration.ReadyCount} / 3";
-        ClientModeText = $"{p.ClientMode} · {p.UiScalePercent}%";
+        OnPropertyChanged(nameof(BindingsSummary));
+        OnPropertyChanged(nameof(CalibrationText));
+        OnPropertyChanged(nameof(ClientModeText));
     }
 }
