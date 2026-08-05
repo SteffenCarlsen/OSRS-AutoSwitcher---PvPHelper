@@ -42,7 +42,7 @@
     <Setter Property="BorderBrush" Value="{StaticResource HairlineBrush}"/>
     <Setter Property="BorderThickness" Value="1"/>
     <Setter Property="CornerRadius" Value="14"/>
-    <Setter Property="Padding" Value="16"/>
+    <Setter Property="Padding" Value="14"/>
   </Style>
 
   <Style Selector="Border.tile">
@@ -50,7 +50,7 @@
     <Setter Property="BorderBrush" Value="{StaticResource HairlineBrush}"/>
     <Setter Property="BorderThickness" Value="1"/>
     <Setter Property="CornerRadius" Value="14"/>
-    <Setter Property="Padding" Value="15,14"/>
+    <Setter Property="Padding" Value="13,10"/>
   </Style>
 
   <!-- key chip -->
@@ -177,11 +177,11 @@
   <!-- ===== Bindings rows ===== -->
   <Style Selector="Border.brow">
     <Setter Property="Background" Value="{StaticResource SurfaceBrush}"/>
-    <Setter Property="Padding" Value="15,12"/>
+    <Setter Property="Padding" Value="13,6"/>
   </Style>
   <Style Selector="Border.rowIco">
-    <Setter Property="Width" Value="30"/>
-    <Setter Property="Height" Value="30"/>
+    <Setter Property="Width" Value="27"/>
+    <Setter Property="Height" Value="27"/>
     <Setter Property="CornerRadius" Value="9"/>
     <Setter Property="Background" Value="{StaticResource BgVoidBrush}"/>
     <Setter Property="BorderBrush" Value="{StaticResource HairlineBrush}"/>
@@ -211,16 +211,16 @@
     <Setter Property="BorderBrush" Value="{StaticResource HairlineBrush}"/>
     <Setter Property="BorderThickness" Value="1"/>
     <Setter Property="CornerRadius" Value="14"/>
-    <Setter Property="Padding" Value="22"/>
+    <Setter Property="Padding" Value="16"/>
   </Style>
   <Style Selector="Border.armHero.armed">
     <Setter Property="Background" Value="{StaticResource SurfaceRaisedBrush}"/>
     <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
   </Style>
   <Style Selector="Border.bigTog">
-    <Setter Property="Width" Value="74"/>
-    <Setter Property="Height" Value="74"/>
-    <Setter Property="CornerRadius" Value="20"/>
+    <Setter Property="Width" Value="56"/>
+    <Setter Property="Height" Value="56"/>
+    <Setter Property="CornerRadius" Value="16"/>
     <Setter Property="Background" Value="{StaticResource BgVoidBrush}"/>
     <Setter Property="BorderBrush" Value="{StaticResource StrongBorderBrush}"/>
     <Setter Property="BorderThickness" Value="1"/>
@@ -261,7 +261,7 @@
   <Style Selector="Border.settingRow">
     <Setter Property="BorderBrush" Value="{StaticResource HairlineBrush}"/>
     <Setter Property="BorderThickness" Value="0,1,0,0"/>
-    <Setter Property="Padding" Value="0,11"/>
+    <Setter Property="Padding" Value="0,8"/>
   </Style>
 
   <!-- Inventory slot cells -->

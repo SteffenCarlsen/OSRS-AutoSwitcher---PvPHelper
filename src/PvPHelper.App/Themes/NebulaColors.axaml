@@ -23,6 +23,15 @@
   <Color x:Key="TextSecondaryColor">#B6AFD4</Color>
   <Color x:Key="TextMutedColor">#7B739E</Color>
 
+  <!-- Retheme the Fluent control accent (radios, checkboxes, sliders, selection) to Nebula violet -->
+  <Color x:Key="SystemAccentColor">#8B5CF6</Color>
+  <Color x:Key="SystemAccentColorLight1">#9D74F8</Color>
+  <Color x:Key="SystemAccentColorLight2">#B29BFB</Color>
+  <Color x:Key="SystemAccentColorLight3">#C9B8FD</Color>
+  <Color x:Key="SystemAccentColorDark1">#7C3AED</Color>
+  <Color x:Key="SystemAccentColorDark2">#6D28D9</Color>
+  <Color x:Key="SystemAccentColorDark3">#5B21B6</Color>
+
   <!-- ===== Brushes ===== -->
   <SolidColorBrush x:Key="BgVoidBrush" Color="{StaticResource VoidColor}"/>
   <SolidColorBrush x:Key="BgBaseBrush" Color="{StaticResource BaseColor}"/>

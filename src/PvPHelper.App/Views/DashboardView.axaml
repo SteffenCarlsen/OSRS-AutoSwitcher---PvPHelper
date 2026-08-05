@@ -4,7 +4,7 @@
              x:Class="PvPHelper.App.Views.DashboardView"
              x:DataType="vm:DashboardViewModel">
 
-  <StackPanel Spacing="16">
+  <StackPanel Spacing="12">
 
     <!-- Page header -->
     <StackPanel Orientation="Horizontal" Spacing="12">
@@ -18,14 +18,14 @@
         <Button Command="{Binding Session.ToggleArmCommand}" Background="Transparent"
                 Padding="0" BorderThickness="0" VerticalAlignment="Center">
           <Border Classes="bigTog" Classes.armed="{Binding Session.IsArmed}">
-            <TextBlock Text="⏻" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center"
+            <TextBlock Text="⏻" FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center"
                        Foreground="{StaticResource TextSecondaryBrush}"/>
           </Border>
         </Button>
 
-        <StackPanel Grid.Column="1" Margin="22,0" VerticalAlignment="Center" Spacing="2">
+        <StackPanel Grid.Column="1" Margin="20,0" VerticalAlignment="Center" Spacing="2">
           <TextBlock Classes="eyebrow" Text="MASTER STATE"/>
-          <TextBlock Text="{Binding Session.ArmLabel}" FontSize="26" FontWeight="SemiBold"/>
+          <TextBlock Text="{Binding Session.ArmLabel}" FontSize="22" FontWeight="SemiBold"/>
           <TextBlock Classes="mono" Foreground="{StaticResource TextMutedBrush}"
                      Text="{Binding Session.RunningTime}"/>
         </StackPanel>
@@ -100,24 +100,16 @@
     </Border>
 
     <!-- Activity -->
-    <TextBlock Classes="eyebrow" Text="ACTIVITY" Margin="2,4,0,0"/>
+    <TextBlock Classes="eyebrow" Text="ACTIVITY" Margin="2,2,0,0"/>
     <Border Classes="card">
-      <StackPanel Spacing="9">
+      <StackPanel Spacing="7">
         <StackPanel Orientation="Horizontal" Spacing="11">
           <TextBlock Classes="mono muted" Text="00:14:02"/>
           <TextBlock Classes="mono" Foreground="{StaticResource AccentBrightBrush}" Text="△ Armed"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Spacing="11">
           <TextBlock Classes="mono muted" Text="00:14:05"/>
-          <TextBlock Classes="mono secondary" Text="⚔ Switched · Full Rune"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" Spacing="11">
-          <TextBlock Classes="mono muted" Text="00:14:06"/>
-          <TextBlock Classes="mono" Foreground="{StaticResource AccentBrightBrush}" Text="✦ Prayer · Protect from Melee"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" Spacing="11">
-          <TextBlock Classes="mono muted" Text="00:14:09"/>
-          <TextBlock Classes="mono secondary" Text="☄ Spec ×2 on target"/>
+          <TextBlock Classes="mono secondary" Text="⚔ Switched · Full Rune   ·   ☄ Spec ×2 on target"/>
         </StackPanel>
       </StackPanel>
     </Border>

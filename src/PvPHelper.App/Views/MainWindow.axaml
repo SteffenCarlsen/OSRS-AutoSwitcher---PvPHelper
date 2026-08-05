@@ -4,7 +4,8 @@
         x:Class="PvPHelper.App.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Title="OSRS PvP Helper"
-        Width="1200" Height="780" MinWidth="1060" MinHeight="680"
+        Width="1240" Height="700" MinWidth="900" MinHeight="560"
+        WindowStartupLocation="CenterScreen"
         Background="{StaticResource BgBaseBrush}">
 
   <Grid RowDefinitions="Auto,*">
@@ -84,7 +85,7 @@
       </Border>
 
       <!-- Main content -->
-      <ScrollViewer Grid.Column="1" Padding="24,22" HorizontalScrollBarVisibility="Disabled">
+      <ScrollViewer Grid.Column="1" Padding="20,16" HorizontalScrollBarVisibility="Disabled">
         <ContentControl Content="{Binding CurrentPage}"/>
       </ScrollViewer>
 
