@@ -68,20 +68,15 @@
         </StackPanel>
       </Border>
 
-      <!-- Input mode -->
+      <!-- Game window (input target) -->
       <Border Classes="card" Grid.Row="1" Grid.Column="0">
         <StackPanel Spacing="4">
-          <TextBlock Classes="cardTitle" Text="Input delivery"/>
-          <TextBlock Classes="cardDesc" Text="How synthetic input reaches the game."/>
-          <StackPanel Orientation="Horizontal" Spacing="18" Margin="0,14,0,0">
-            <RadioButton GroupName="input" Content="Foreground (SendInput)" IsChecked="{Binding IsForeground, Mode=TwoWay}"/>
-            <RadioButton GroupName="input" Content="Background (PostMessage)" IsChecked="{Binding IsBackground, Mode=TwoWay}"/>
-          </StackPanel>
-          <TextBlock Classes="cardDesc" Text="{Binding InputModeHint}" Margin="0,8,0,0"/>
+          <TextBlock Classes="cardTitle" Text="Game window"/>
+          <TextBlock Classes="cardDesc" Text="Input is posted to this window (PostMessage) — the game can stay unfocused."/>
 
-          <StackPanel Margin="0,14,0,0" Spacing="8" IsEnabled="{Binding IsBackground}">
+          <StackPanel Margin="0,14,0,0" Spacing="8">
             <TextBlock Text="Target window title" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}"/>
-            <Grid ColumnDefinitions="*,Auto" >
+            <Grid ColumnDefinitions="*,Auto">
               <TextBox PlaceholderText="RuneLite" Text="{Binding TargetWindowTitle, Mode=TwoWay}"/>
               <Button Grid.Column="1" Classes="ghost" Content="Check" Margin="8,0,0,0" Command="{Binding CheckWindowCommand}"/>
             </Grid>

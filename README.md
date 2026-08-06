@@ -22,8 +22,8 @@ with a deep-space **"Nebula"** theme.
 - **Profiles** — save, load (hot-swap), duplicate, and delete presets.
 - **Settings** — anti-ban/humanisation, Fixed/Resizable/Stretched client mode, and **fully
   configurable engine timings** (move step, pre-click, tab, action gap, switch-click, spec interval).
-- **Input delivery** — choose **Foreground** (SendInput, game must be focused) or **Background**
-  (PostMessage to the game window, no focus required — game-dependent).
+- **Background input** — drives the game via **PostMessage** to its window, so the game doesn't
+  need to be focused (game-dependent; set the target window title in Settings).
 - **Runtime** — minimises to the system tray with a global arm/disarm hotkey and an always-on-top
   status HUD while armed.
 

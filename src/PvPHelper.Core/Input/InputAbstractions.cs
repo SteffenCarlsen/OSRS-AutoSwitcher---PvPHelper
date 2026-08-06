@@ -2,7 +2,7 @@ using PvPHelper.Core.Models;
 
 namespace PvPHelper.Core.Input;
 
-/// <summary>Sends synthetic input to the focused game window. Implemented over Win32 SendInput.</summary>
+/// <summary>Sends synthetic mouse moves/clicks and key presses to the game.</summary>
 public interface IInputSender
 {
     ScreenPoint GetCursor();

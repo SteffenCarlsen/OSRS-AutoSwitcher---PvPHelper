@@ -13,7 +13,6 @@ public sealed partial class CalibrationViewModel : PageViewModelBase
 
     private readonly SessionState _session;
     private readonly IHotkeyHook _hook;
-    private readonly Win32InputSender _cursor;
     private Target? _capturing;
 
     public override string Title => "Calibration";
@@ -23,11 +22,10 @@ public sealed partial class CalibrationViewModel : PageViewModelBase
     [ObservableProperty] private bool _isCapturing;
     [ObservableProperty] private string _status = "Ready. Capture each anchor by hovering the target in-game and pressing any key.";
 
-    public CalibrationViewModel(SessionState session, IHotkeyHook hook, Win32InputSender cursor)
+    public CalibrationViewModel(SessionState session, IHotkeyHook hook)
     {
         _session = session;
         _hook = hook;
-        _cursor = cursor;
     }
 
     private CalibrationData C => _session.Profile.Calibration;
@@ -63,7 +61,7 @@ public sealed partial class CalibrationViewModel : PageViewModelBase
 
     private void OnCaptureKey(HotkeyEvent _)
     {
-        var point = _cursor.GetCursor(); // physical screen pixels, matches SetCursorPos on replay
+        var point = Win32Cursor.GetPosition(); // physical screen pixels, matches playback
         var target = _capturing;
         Dispatcher.UIThread.Post(() => Apply(target, point));
     }

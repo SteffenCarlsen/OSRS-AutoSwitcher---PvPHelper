@@ -84,23 +84,6 @@ public sealed partial class SettingsViewModel : PageViewModelBase
         set { var i = (int)value; if (P.UiScalePercent != i) { P.UiScalePercent = i; OnPropertyChanged(); Save(); } }
     }
 
-    // ---- Input mode ----
-    public bool IsForeground { get => P.InputMode == InputMode.Foreground; set { if (value) SetInputMode(InputMode.Foreground); } }
-    public bool IsBackground { get => P.InputMode == InputMode.Background; set { if (value) SetInputMode(InputMode.Background); } }
-
-    private void SetInputMode(InputMode mode)
-    {
-        P.InputMode = mode;
-        OnPropertyChanged(nameof(IsForeground));
-        OnPropertyChanged(nameof(IsBackground));
-        OnPropertyChanged(nameof(InputModeHint));
-        Save();
-    }
-
-    public string InputModeHint => P.InputMode == InputMode.Background
-        ? "Posts window messages to the game — it can stay unfocused. Game-dependent, especially for keys."
-        : "Drives the real cursor via SendInput — the game must be the focused window.";
-
     public string TargetWindowTitle
     {
         get => P.TargetWindowTitle ?? string.Empty;

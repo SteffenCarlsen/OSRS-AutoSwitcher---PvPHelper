@@ -4,15 +4,17 @@ using PvPHelper.Core.Models;
 namespace PvPHelper.Core.Input;
 
 /// <summary>
-/// Background input via posted window messages. Screen coordinates (from calibration) are
-/// converted to the target window's client area. There is no real cursor, so a virtual
-/// cursor is tracked for the engine's "return to previous position" moves.
-/// Failures (window gone/invalid) are swallowed so a stray action can't crash the app.
+/// Delivers input to the game via posted window messages (no window focus required).
+/// Calibrated screen coordinates are converted to the target window's client area.
+/// A virtual cursor tracks the last posted position so the engine's interpolated moves stay
+/// continuous (each move starts where the previous one ended) and "return to previous position"
+/// posts the cursor back to where the sequence began. Failures (window gone/invalid) are traced
+/// and swallowed so a stray action can't crash the app.
 /// </summary>
 public sealed class PostMessageInputSender : IInputSender
 {
     private readonly IGameWindowProvider _windows;
-    private ScreenPoint _cursor;
+    private ScreenPoint _cursor = Win32Cursor.GetPosition();
 
     public PostMessageInputSender(IGameWindowProvider windows) => _windows = windows;
 
