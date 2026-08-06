@@ -32,7 +32,6 @@ internal static class Program
         var store = new ProfileStore(tempDir);
         var session = new SessionState(store);
         var hook = new LowLevelHotkeyHook();     // not started
-        var cursor = new Win32InputSender();
         var locator = new GameWindowLocator();
 
         var main = new MainWindowViewModel(
@@ -43,7 +42,7 @@ internal static class Program
             new SpecViewModel(session),
             new HotkeysViewModel(session),
             new ProfilesViewModel(session),
-            new CalibrationViewModel(session, hook, cursor),
+            new CalibrationViewModel(session, hook),
             new SettingsViewModel(session, locator));
 
         var window = new MainWindow { DataContext = main, Width = 1360, Height = 760 };

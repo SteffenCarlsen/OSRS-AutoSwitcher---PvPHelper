@@ -8,17 +8,6 @@ public enum ClientMode
     Stretched
 }
 
-/// <summary>
-/// How synthetic input reaches the game. Foreground drives the real cursor via SendInput
-/// (game must be focused). Background posts window messages to the target HWND (no focus
-/// required), at the cost of being game-dependent.
-/// </summary>
-public enum InputMode
-{
-    Foreground,
-    Background
-}
-
 /// <summary>Movement/humanisation knobs. Defaults reproduce the legacy console feel.</summary>
 public sealed class AntiBanSettings
 {
@@ -124,10 +113,7 @@ public sealed class Profile
     public ClientMode ClientMode { get; set; } = ClientMode.Fixed;
     public int UiScalePercent { get; set; } = 100;
 
-    /// <summary>Foreground (SendInput) or Background (PostMessage) input delivery.</summary>
-    public InputMode InputMode { get; set; } = InputMode.Foreground;
-
-    /// <summary>Optional window-title substring used to locate the game window in Background mode.</summary>
+    /// <summary>Optional window-title substring used to locate the game window for input.</summary>
     public string? TargetWindowTitle { get; set; }
 
     public AntiBanSettings AntiBan { get; set; } = new();

@@ -25,17 +25,10 @@ public partial class App : Application
         services.AddSingleton<ProfileStore>();
         services.AddSingleton<SessionState>();
 
-        // Automation engine — foreground (SendInput) and background (PostMessage) senders,
-        // dispatched by the active profile's input mode.
-        services.AddSingleton<Win32InputSender>();
+        // Automation engine — input is delivered to the game via PostMessage (no focus required).
         services.AddSingleton<GameWindowLocator>();
         services.AddSingleton<IGameWindowProvider>(sp => sp.GetRequiredService<GameWindowLocator>());
-        services.AddSingleton<PostMessageInputSender>();
-        services.AddSingleton<IInputModeProvider, AppInputModeProvider>();
-        services.AddSingleton<IInputSender>(sp => new InputRouter(
-            sp.GetRequiredService<IInputModeProvider>(),
-            sp.GetRequiredService<Win32InputSender>(),
-            sp.GetRequiredService<PostMessageInputSender>()));
+        services.AddSingleton<IInputSender, PostMessageInputSender>();
         services.AddSingleton<IHotkeyHook, LowLevelHotkeyHook>();
         services.AddSingleton<ActionEngine>();
         services.AddSingleton<ArmController>();
