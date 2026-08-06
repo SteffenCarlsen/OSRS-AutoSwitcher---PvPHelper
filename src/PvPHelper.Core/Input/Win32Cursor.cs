@@ -8,8 +8,11 @@ public static class Win32Cursor
 {
     public static ScreenPoint GetPosition()
     {
-        GetCursorPos(out var p);
-        return new ScreenPoint(p.X, p.Y);
+        if (GetCursorPos(out var p))
+            return new ScreenPoint(p.X, p.Y);
+
+        System.Diagnostics.Debug.WriteLine("[Win32Cursor] GetCursorPos failed");
+        return default;
     }
 
     [StructLayout(LayoutKind.Sequential)]
