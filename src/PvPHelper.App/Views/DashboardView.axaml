@@ -102,14 +102,16 @@
 
     <!-- Activity -->
     <TextBlock Classes="eyebrow" Text="ACTIVITY" Margin="2,2,0,0"/>
-    <Border Classes="card" MinHeight="60">
-      <ItemsControl ItemsSource="{Binding Session.Activity}">
-        <ItemsControl.ItemTemplate>
-          <DataTemplate x:DataType="sys:String">
-            <TextBlock Classes="mono secondary" Text="{Binding}" FontSize="12.5" Margin="0,2"/>
-          </DataTemplate>
-        </ItemsControl.ItemTemplate>
-      </ItemsControl>
+    <Border Classes="card" MinHeight="60" MaxHeight="180">
+      <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <ItemsControl ItemsSource="{Binding Session.Activity}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate x:DataType="sys:String">
+              <TextBlock Classes="mono secondary" Text="{Binding}" FontSize="12.5" Margin="0,2"/>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </ScrollViewer>
     </Border>
 
   </StackPanel>

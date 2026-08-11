@@ -34,6 +34,12 @@ public sealed class GameWindowLocator : IGameWindowProvider
             : Win32Windows.FindTopLevel(TitleCandidates);
 }
 
+/// <summary>A selectable top-level window (handle + visible title).</summary>
+public readonly record struct WindowInfo(nint Handle, string Title)
+{
+    public override string ToString() => Title;
+}
+
 /// <summary>Win32 window helpers (enumeration + coordinate conversion).</summary>
 public static class Win32Windows
 {
@@ -80,8 +86,53 @@ public static class Win32Windows
         return found;
     }
 
+    /// <summary>
+    /// Every visible, titled, top-level window a user could pick as the input target.
+    /// Tool windows and DWM-cloaked ghost windows (e.g. background UWP apps) are filtered out
+    /// so the list stays close to the "real" windows on screen.
+    /// </summary>
+    public static IReadOnlyList<WindowInfo> EnumerateTopLevel()
+    {
+        var list = new List<WindowInfo>();
+        var sb = new StringBuilder(512);
+
+        EnumWindows((hwnd, _) =>
+        {
+            if (!IsWindowVisible(hwnd)) return true;
+
+            var exStyle = GetWindowLong(hwnd, GWL_EXSTYLE);
+            if ((exStyle & WS_EX_TOOLWINDOW) != 0) return true; // skip tool windows (tooltips, etc.)
+
+            if (IsCloaked(hwnd)) return true; // skip invisible UWP/DWM ghosts
+
+            var len = GetWindowText(hwnd, sb, sb.Capacity);
+            if (len == 0) return true;
+
+            list.Add(new WindowInfo(hwnd, sb.ToString(0, len)));
+            return true;
+        }, 0);
+
+        return list;
+    }
+
+    private static bool IsCloaked(nint hwnd)
+    {
+        try
+        {
+            return DwmGetWindowAttribute(hwnd, DWMWA_CLOAKED, out var cloaked, sizeof(int)) == 0 && cloaked != 0;
+        }
+        catch
+        {
+            return false; // dwmapi unavailable — treat as not cloaked
+        }
+    }
+
     [StructLayout(LayoutKind.Sequential)]
     private struct POINT { public int X; public int Y; }
+
+    private const int GWL_EXSTYLE = -20;
+    private const int WS_EX_TOOLWINDOW = 0x00000080;
+    private const int DWMWA_CLOAKED = 14;
 
     private delegate bool EnumWindowsProc(nint hwnd, nint lParam);
 
@@ -99,4 +150,11 @@ public static class Win32Windows
 
     [DllImport("user32.dll")]
     private static extern bool ScreenToClient(nint hWnd, ref POINT lpPoint);
+
+    // GWL_EXSTYLE fits in 32 bits, so GetWindowLongW is correct on both x86 and x64.
+    [DllImport("user32.dll", EntryPoint = "GetWindowLongW")]
+    private static extern int GetWindowLong(nint hWnd, int nIndex);
+
+    [DllImport("dwmapi.dll")]
+    private static extern int DwmGetWindowAttribute(nint hwnd, int attr, out int value, int size);
 }

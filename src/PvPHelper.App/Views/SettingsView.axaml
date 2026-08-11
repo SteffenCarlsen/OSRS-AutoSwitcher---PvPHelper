@@ -72,15 +72,31 @@
       <Border Classes="card" Grid.Row="1" Grid.Column="0">
         <StackPanel Spacing="4">
           <TextBlock Classes="cardTitle" Text="Game window"/>
-          <TextBlock Classes="cardDesc" Text="Input is posted to this window (PostMessage) — the game can stay unfocused."/>
+          <TextBlock Classes="cardDesc" Text="Input is posted to this window (PostMessage) — the game can stay unfocused. Defaults to RuneLite when it's running."/>
 
           <StackPanel Margin="0,14,0,0" Spacing="8">
-            <TextBlock Text="Target window title" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}"/>
+            <TextBlock Text="Target window" FontSize="12" Foreground="{StaticResource TextSecondaryBrush}"/>
+            <Grid ColumnDefinitions="*,Auto">
+              <ComboBox ItemsSource="{Binding Windows}"
+                        SelectedItem="{Binding SelectedWindow, Mode=TwoWay}"
+                        HorizontalAlignment="Stretch" MaxDropDownHeight="320"
+                        PlaceholderText="Select a window…">
+                <ComboBox.ItemTemplate>
+                  <DataTemplate x:DataType="vm:GameWindowOption">
+                    <TextBlock Text="{Binding Title}" TextTrimming="CharacterEllipsis"/>
+                  </DataTemplate>
+                </ComboBox.ItemTemplate>
+              </ComboBox>
+              <Button Grid.Column="1" Classes="ghost" Content="Refresh" Margin="8,0,0,0" Command="{Binding RefreshWindowsCommand}"/>
+            </Grid>
+            <TextBlock Classes="mono muted" Text="{Binding WindowStatus}" FontSize="11.5"/>
+
+            <TextBlock Text="Match by title (fallback — used when the game isn't open yet)" FontSize="11.5"
+                       Foreground="{StaticResource TextMutedBrush}" Margin="0,8,0,0"/>
             <Grid ColumnDefinitions="*,Auto">
               <TextBox PlaceholderText="RuneLite" Text="{Binding TargetWindowTitle, Mode=TwoWay}"/>
               <Button Grid.Column="1" Classes="ghost" Content="Check" Margin="8,0,0,0" Command="{Binding CheckWindowCommand}"/>
             </Grid>
-            <TextBlock Classes="mono muted" Text="{Binding WindowStatus}" FontSize="11.5"/>
           </StackPanel>
         </StackPanel>
       </Border>

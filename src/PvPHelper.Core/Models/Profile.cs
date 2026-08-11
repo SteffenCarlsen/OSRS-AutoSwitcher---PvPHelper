@@ -116,6 +116,10 @@ public sealed class Profile
     /// <summary>Optional window-title substring used to locate the game window for input.</summary>
     public string? TargetWindowTitle { get; set; }
 
+    /// <summary>Last on-screen position of the status HUD (null = use the default corner).</summary>
+    public int? HudX { get; set; }
+    public int? HudY { get; set; }
+
     public AntiBanSettings AntiBan { get; set; } = new();
     public TabKeys Tabs { get; set; } = new();
     public CalibrationData Calibration { get; set; } = new();

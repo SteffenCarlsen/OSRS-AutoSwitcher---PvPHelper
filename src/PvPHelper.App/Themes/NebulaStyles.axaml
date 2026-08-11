@@ -247,6 +247,31 @@
     <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
   </Style>
 
+  <!-- ComboBox (game-window picker) -->
+  <Style Selector="ComboBox">
+    <Setter Property="Background" Value="{StaticResource BgVoidBrush}"/>
+    <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+    <Setter Property="BorderBrush" Value="{StaticResource HairlineBrush}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="CornerRadius" Value="10"/>
+    <Setter Property="Padding" Value="10,7"/>
+  </Style>
+  <Style Selector="ComboBox:pointerover /template/ Border#Background">
+    <Setter Property="BorderBrush" Value="{StaticResource StrongBorderBrush}"/>
+  </Style>
+  <Style Selector="ComboBox:focus /template/ Border#Background">
+    <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+  </Style>
+  <Style Selector="ComboBoxItem">
+    <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+  </Style>
+  <Style Selector="ComboBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{StaticResource SurfaceRaisedBrush}"/>
+  </Style>
+  <Style Selector="ComboBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+    <Setter Property="Background" Value="{StaticResource AccentWashBrush}"/>
+  </Style>
+
   <!-- Card heading + description -->
   <Style Selector="TextBlock.cardTitle">
     <Setter Property="FontSize" Value="14"/>

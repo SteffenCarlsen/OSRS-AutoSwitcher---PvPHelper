@@ -54,6 +54,9 @@ project.fragment.lock.json
 artifacts/
 **/Properties/launchSettings.json
 
+# Release output from build/publish.ps1
+dist/
+
 # StyleCop
 StyleCopReport.xml
 
