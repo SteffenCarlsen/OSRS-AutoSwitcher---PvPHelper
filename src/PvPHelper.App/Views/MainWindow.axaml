@@ -23,7 +23,7 @@
                        Foreground="{StaticResource TextSecondaryBrush}"/>
           </StackPanel>
         </Border>
-        <TextBlock Grid.Column="4" Classes="mono muted" Text="v2.1 · Nebula" FontSize="11" VerticalAlignment="Center"/>
+        <TextBlock Grid.Column="4" Classes="mono muted" Text="v2.1.1 · Nebula" FontSize="11" VerticalAlignment="Center"/>
       </Grid>
     </Border>
 

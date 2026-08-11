@@ -11,7 +11,7 @@
       <TextBlock Text="Click to rebind" VerticalAlignment="Center"
                  Foreground="{StaticResource TextMutedBrush}"
                  IsVisible="{Binding !IsCapturing, ElementName=Root}"/>
-      <TextBlock Text="Press a key · Mouse 4/5 · Esc cancels" VerticalAlignment="Center"
+      <TextBlock Text="Press any key / mouse button · Esc cancels" VerticalAlignment="Center"
                  Foreground="{StaticResource AccentBrightBrush}"
                  IsVisible="{Binding IsCapturing, ElementName=Root}"/>
     </StackPanel>
