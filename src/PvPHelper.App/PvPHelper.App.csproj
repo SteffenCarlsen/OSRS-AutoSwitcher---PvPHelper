@@ -9,6 +9,7 @@
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     <RootNamespace>PvPHelper.App</RootNamespace>
     <AssemblyName>OSRS-PvPHelper</AssemblyName>
+    <Version>2.1.0</Version>
 
     <!-- Win32 icon embedded in the .exe (taskbar / Explorer / alt-tab). -->
     <ApplicationIcon>..\..\icons8-intelligence-64.ico</ApplicationIcon>
