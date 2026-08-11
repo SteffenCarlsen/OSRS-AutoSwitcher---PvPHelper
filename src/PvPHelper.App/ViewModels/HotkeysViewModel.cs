@@ -16,6 +16,7 @@ public sealed partial class HotkeysViewModel : PageViewModelBase
     public override string Glyph => "⌨";
 
     public ObservableCollection<HotkeyRowVm> Bindings { get; } = new();
+    public ObservableCollection<HotkeyRowVm> GameTabs { get; } = new();
     public ObservableCollection<HotkeyRowVm> AppKeys { get; } = new();
 
     public bool HasBindings => Bindings.Count > 0;
@@ -31,6 +32,7 @@ public sealed partial class HotkeysViewModel : PageViewModelBase
     private void Rebuild()
     {
         Bindings.Clear();
+        GameTabs.Clear();
         AppKeys.Clear();
         var p = _session.Profile;
 
@@ -40,6 +42,12 @@ public sealed partial class HotkeysViewModel : PageViewModelBase
             Bindings.Add(new HotkeyRowVm("✦", "Prayer", PrayerCatalog.DisplayName(pr.Prayer), () => pr.Hotkey, v => pr.Hotkey = v, OnChanged));
         foreach (var sp in p.Specs)
             Bindings.Add(new HotkeyRowVm("☄", "Spec", sp.Name, () => sp.Hotkey, v => sp.Hotkey = v, OnChanged));
+
+        // In-game tab F-keys the engine presses to open a panel before clicking it.
+        var t = p.Tabs;
+        GameTabs.Add(new HotkeyRowVm("▦", "Game tab", "Inventory tab", () => t.Inventory, v => t.Inventory = v, OnChanged));
+        GameTabs.Add(new HotkeyRowVm("✦", "Game tab", "Prayer tab", () => t.Prayer, v => t.Prayer = v, OnChanged));
+        GameTabs.Add(new HotkeyRowVm("⚔", "Game tab", "Combat / attack-style tab", () => t.Attack, v => t.Attack = v, OnChanged));
 
         AppKeys.Add(new HotkeyRowVm("△", "Application", "Master arm / disarm", () => p.ArmHotkey, v => p.ArmHotkey = v, OnChanged));
         AppKeys.Add(new HotkeyRowVm("⛔", "Application", "Panic / stop", () => p.PanicKey, v => p.PanicKey = v, OnChanged));

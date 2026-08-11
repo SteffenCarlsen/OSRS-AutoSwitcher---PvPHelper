@@ -1,4 +1,6 @@
 using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -8,11 +10,19 @@ using PvPHelper.Core.Models;
 
 namespace PvPHelper.App.ViewModels;
 
+/// <summary>A running window the user can target for input.</summary>
+public sealed record GameWindowOption(nint Handle, string Title);
+
 public sealed partial class SettingsViewModel : PageViewModelBase
 {
+    // Known game-client titles, most-specific first — used for the RuneLite default and to keep
+    // the persisted title a stable substring (never a player-name-specific full title).
+    private static readonly string[] KnownGameTitles = { "RuneLite", "Old School RuneScape", "RuneScape" };
+
     private readonly SessionState _session;
     private readonly GameWindowLocator _locator;
     private readonly DispatcherTimer _saveDebounce;
+    private bool _suppressWindowSelection;
 
     private Profile P => _session.Profile;
 
@@ -23,12 +33,71 @@ public sealed partial class SettingsViewModel : PageViewModelBase
     [ObservableProperty]
     private string _windowStatus = string.Empty;
 
+    /// <summary>All pickable top-level windows (refreshed when the page is shown).</summary>
+    public ObservableCollection<GameWindowOption> Windows { get; } = new();
+
+    [ObservableProperty]
+    private GameWindowOption? _selectedWindow;
+
     public SettingsViewModel(SessionState session, GameWindowLocator locator)
     {
         _session = session;
         _locator = locator;
         _saveDebounce = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(400) };
         _saveDebounce.Tick += (_, _) => { _saveDebounce.Stop(); _session.Save(); };
+        RefreshWindows();
+    }
+
+    partial void OnSelectedWindowChanged(GameWindowOption? value)
+    {
+        if (_suppressWindowSelection || value is null) return;
+
+        // Use this exact handle for the current session; persist a stable title so the window is
+        // re-found automatically next launch.
+        _locator.ExplicitWindow = value.Handle;
+        TargetWindowTitle = StableTitle(value.Title); // setter calls UseTitle + Save
+        WindowStatus = $"Targeting “{value.Title}”";
+    }
+
+    /// <summary>Enumerate open windows, then auto-select the saved one, else RuneLite, else none.</summary>
+    [RelayCommand]
+    private void RefreshWindows()
+    {
+        _suppressWindowSelection = true;
+
+        Windows.Clear();
+        foreach (var w in Win32Windows.EnumerateTopLevel().OrderBy(w => w.Title, StringComparer.OrdinalIgnoreCase))
+            Windows.Add(new GameWindowOption(w.Handle, w.Title));
+
+        var saved = P.TargetWindowTitle;
+        var pick =
+            (!string.IsNullOrWhiteSpace(saved)
+                ? Windows.FirstOrDefault(w => w.Title.Contains(saved!, StringComparison.OrdinalIgnoreCase))
+                : null)
+            ?? Windows.FirstOrDefault(w => w.Title.Contains("RuneLite", StringComparison.OrdinalIgnoreCase));
+
+        _suppressWindowSelection = false;
+        SelectedWindow = pick;
+
+        if (pick is not null)
+        {
+            _locator.ExplicitWindow = pick.Handle;
+            WindowStatus = $"Targeting “{pick.Title}”";
+        }
+        else
+        {
+            WindowStatus = Windows.Count == 0 ? "No windows found" : "No RuneLite window — pick one below";
+        }
+    }
+
+    /// <summary>Collapse a full window title to a known game substring so persistence survives
+    /// player-name changes ("RuneLite - Zezima" → "RuneLite").</summary>
+    private static string StableTitle(string title)
+    {
+        foreach (var known in KnownGameTitles)
+            if (title.Contains(known, StringComparison.OrdinalIgnoreCase))
+                return known;
+        return title;
     }
 
     // ---- Anti-ban ----
@@ -112,8 +181,12 @@ public sealed partial class SettingsViewModel : PageViewModelBase
     public string PrayerStatus => P.Calibration.PrayerReady ? "Ready" : "Not set";
     public string SpecStatus => P.Calibration.SpecReady ? "Ready" : "Not set";
 
-    // Re-read every setting from the (possibly hot-swapped) active profile.
-    public override void OnNavigatedTo() => OnPropertyChanged(string.Empty);
+    // Re-read every setting from the (possibly hot-swapped) active profile, and re-scan windows.
+    public override void OnNavigatedTo()
+    {
+        RefreshWindows();
+        OnPropertyChanged(string.Empty);
+    }
 
     private void Save()
     {

@@ -38,6 +38,13 @@
     <TextBlock Text="No bindings yet — add them from the Auto-Switch, Prayers, and Spec pages."
                Classes="muted" FontSize="12" IsVisible="{Binding !HasBindings}"/>
 
+    <TextBlock Classes="eyebrow" Text="GAME TABS" Margin="2,6,0,0"/>
+    <TextBlock Text="Keys the app presses in-game to open a panel before clicking it — set these to match your OSRS tab keybinds (Inventory / Prayers / Combat)."
+               Classes="muted" FontSize="12"/>
+    <Border Classes="card" Padding="0" ClipToBounds="True">
+      <ItemsControl ItemsSource="{Binding GameTabs}" ItemTemplate="{StaticResource HotkeyRow}"/>
+    </Border>
+
     <TextBlock Classes="eyebrow" Text="APPLICATION KEYS" Margin="2,6,0,0"/>
     <Border Classes="card" Padding="0" ClipToBounds="True">
       <ItemsControl ItemsSource="{Binding AppKeys}" ItemTemplate="{StaticResource HotkeyRow}"/>
